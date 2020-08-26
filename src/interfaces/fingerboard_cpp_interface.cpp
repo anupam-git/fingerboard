@@ -10,19 +10,19 @@ FingerboardCppInterface::FingerboardCppInterface(QObject *parent)
 
 void FingerboardCppInterface::listFp() {
   logger->log(Logger::INFO, "Start Listing FP");
-  logger->log(Logger::DEBUG, "End Listing FP");
+  logger->log(Logger::INFO, "End Listing FP");
 }
 
 void FingerboardCppInterface::enrollFp() {
-  logger->log(Logger::VERBOSE, "Start Enroll FP");
-  logger->log(Logger::CRITICAL, "End Enroll FP");
+  logger->log(Logger::INFO, "Start Enrolling FP");
+  logger->log(Logger::INFO, "End Enrolling FP");
 }
 
 void FingerboardCppInterface::verifyFp() {
-  logger->log(Logger::WARNING, "Start Verify FP");
-  logger->log(Logger::DEBUG, "End Verify FP");
+  logger->log(Logger::INFO, "Start Verifying FP");
+  logger->log(Logger::INFO, "End Verifying FP");
 }
 
 void FingerboardCppInterface::deleteFp() {
-  logger->log(Logger::DEBUG, "Delete FP");
+  logger->log(Logger::INFO, "Deleting FP");
 }
