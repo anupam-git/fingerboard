@@ -11,19 +11,19 @@ Building
 --------
 The project uses CMake to build the project. Follow the steps below to build and install this project.
    
-   .. code-block:: bash
+.. code-block:: bash
 
-      # Make a build directory and cd into it
-      mkdir build && cd build
+  # Make a build directory and cd into it
+  mkdir build && cd build
 
-      # Run cmake
-      cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+  # Run cmake
+  cmake .. -DCMAKE_INSTALL_PREFIX=/usr
 
-      # Build the project
-      make -j$(nproc)
+  # Build the project
+  make -j$(nproc)
 
-      # [OPTIONAL] Install to system (requires root access)
-      sudo make install
+  # [OPTIONAL] Install to system (requires root access)
+  sudo make install
 
 Hacking
 -------
