@@ -67,6 +67,11 @@ CMakeLists.txt.user*
 # Bazaar files
 .bzr
 
+# PKGBUILD BUILD FILES
+pkg/
+pkgbuild-fingerboard-*/
+fingerboard-*.pkg.tar.xz
+
 # OTHERS
 build/
 *.kdev4
