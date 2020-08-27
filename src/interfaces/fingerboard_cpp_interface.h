@@ -21,8 +21,8 @@ class FingerboardCppInterface : public QObject {
   void init();
   void deviceInfo();
   void listFp();
-  void enrollFp();
-  void verifyFp();
+  void enrollFp(QString finger);
+  void verifyFp(QString finger = "any");
   void deleteFp();
 
  signals:
@@ -34,9 +34,14 @@ class FingerboardCppInterface : public QObject {
   net::reactivated::Fprint::Manager *fprintdInterfaceManager;
   QDBusInterface *fprintdDevicePropertiesInterface;
   QString username = qgetenv("USER");
+  QString defaultDevicePath;
 
-  void claimFpDevice();
+  bool claimFpDevice();
   void releaseFpDevice();
+
+ private slots:
+  void enrollStatusSlot(QString result, bool done);
+  void verifyStatusSlot(QString result, bool done);
 };
 
 #endif  // INTERFACES_FINGERBOARD_CPP_INTERFACE

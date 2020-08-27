@@ -10,7 +10,7 @@ class Logger : public QObject {
   Q_OBJECT
 
  public:
-  enum Level { INFO, DEBUG, VERBOSE, WARNING, CRITICAL };
+  enum Level { INFO, DEBUG, VERBOSE, WARNING, ERROR, CRITICAL };
 
   Logger(QObject *parent = nullptr);
   ~Logger();

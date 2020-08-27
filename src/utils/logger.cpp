@@ -16,33 +16,38 @@ Logger::Logger(QObject *parent) : QObject(parent) {
 
 void Logger::log(Logger::Level level, QString msg) {
   QString format = QString("%1 %2 : %3");
-  QString logMsg;
+  QString logLevel = "";
 
   QString timestamp =
       QDateTime::currentDateTime().toString("dd/MMM/yyyy hh:mm:ss");
 
   switch (level) {
     case Level::INFO:
-      logMsg = format.arg("[INFO]", 10).arg(timestamp, 22).arg(msg);
+      logLevel = "[INFO]";
       break;
 
     case Level::DEBUG:
-      logMsg = format.arg("[DEBUG]", 10).arg(timestamp, 22).arg(msg);
+      logLevel = "[DEBUG]";
       break;
 
     case Level::VERBOSE:
-      logMsg = format.arg("[VERBOSE]", 10).arg(timestamp, 22).arg(msg);
+      logLevel = "[VERBOSE]";
       break;
 
     case Level::WARNING:
-      logMsg = format.arg("[WARNING]", 10).arg(timestamp, 22).arg(msg);
+      logLevel = "[WARNING]";
+      break;
+
+    case Level::ERROR:
+      logLevel = "[ERROR]";
       break;
 
     case Level::CRITICAL:
-      logMsg = format.arg("[CRITICAL]", 10).arg(timestamp, 22).arg(msg);
+      logLevel = "[CRITICAL]";
       break;
   }
 
+  QString logMsg = format.arg(logLevel, 10).arg(timestamp, 22).arg(msg);
   QTextStream ts(file);
   ts << logMsg << Qt::endl;
 
