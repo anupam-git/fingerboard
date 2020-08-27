@@ -8,6 +8,8 @@
 #include "fprintdmanagerinterface.h"
 #include "utils/logger.h"
 
+#define FPRINTD_SERVICE "net.reactivated.Fprint"
+
 class FingerboardCppInterface : public QObject {
   Q_OBJECT
 
@@ -25,11 +27,12 @@ class FingerboardCppInterface : public QObject {
 
  signals:
   void log(QString msg);
+  void operationComplete();
 
  private:
-  QObject *parent = nullptr;
-  QDBusInterface *fprintdInterfaceManager;
-  QDBusInterface *fprintdInterfaceDevice;
+  net::reactivated::Fprint::Device *fprintdInterfaceDevice;
+  net::reactivated::Fprint::Manager *fprintdInterfaceManager;
+  QDBusInterface *fprintdDevicePropertiesInterface;
   QString username = qgetenv("USER");
 
   void claimFpDevice();
