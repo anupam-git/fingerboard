@@ -11,7 +11,17 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(ECM 1.7.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${ECM_MODULE_PATH})
 
-find_package(Qt5 REQUIRED NO_MODULE COMPONENTS Core Qml Quick)
+find_package(
+    Qt5
+        REQUIRED
+        NO_MODULE
+
+    COMPONENTS
+        Core
+        Qml
+        Quick
+        DBus
+)
 
 include(ECMSetupVersion)
 include(FeatureSummary)

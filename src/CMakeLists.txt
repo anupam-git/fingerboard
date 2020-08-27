@@ -16,11 +16,20 @@ set(
   qml/qml.qrc
 )
 
+qt5_add_dbus_interfaces(
+  FPRINTD_DBUS_INTERFACES
+
+  fprintd-dbus-interface-xml/fprintddevice.xml
+  fprintd-dbus-interface-xml/fprintdmanager.xml
+)
+
 add_executable(
   ${PROJECT_NAME}
 
   ${FINGERBOARD_QML}
   ${FINGERBOARD_SRCS}
+
+  ${FPRINTD_DBUS_INTERFACES}
 )
 target_link_libraries(    
   ${PROJECT_NAME}
@@ -29,4 +38,5 @@ target_link_libraries(
   Qt5::Core
   Qt5::Qml
   Qt5::Quick
+  Qt5::DBus
 )

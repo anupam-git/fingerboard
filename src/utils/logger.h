@@ -7,8 +7,9 @@
 #include <QTextStream>
 
 class Logger : public QObject {
+  Q_OBJECT
 
-public:
+ public:
   enum Level { INFO, DEBUG, VERBOSE, WARNING, CRITICAL };
 
   Logger(QObject *parent = nullptr);
@@ -16,8 +17,11 @@ public:
 
   void log(Level level, QString msg);
 
-private:
+ signals:
+  void writeLog(QString msg);
+
+ private:
   QFile *file;
 };
 
-#endif // UTILS_LOGGER
+#endif  // UTILS_LOGGER
