@@ -40,3 +40,4 @@ target_link_libraries(
   Qt5::Quick
   Qt5::DBus
 )
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
