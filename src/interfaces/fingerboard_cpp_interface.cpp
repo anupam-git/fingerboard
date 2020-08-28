@@ -4,8 +4,10 @@
 #include <QDebug>
 #include <QString>
 
-FingerboardCppInterface::FingerboardCppInterface(QObject* parent)
+FingerboardCppInterface::FingerboardCppInterface(AppState* appState,
+                                                 QObject* parent)
     : QObject(parent) {
+  this->appState = appState;
   logger = new Logger(parent);
   connect(logger, &Logger::writeLog, [=](QString msg) { emit log(msg); });
 }
@@ -76,6 +78,9 @@ void FingerboardCppInterface::deviceInfo() {
 
     releaseFpDevice();
     emit operationComplete();
+
+    appState->setState(AppState::IDLE);
+    emit appState->stateChanged();
   }
 }
 

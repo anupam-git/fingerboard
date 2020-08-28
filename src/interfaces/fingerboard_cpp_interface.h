@@ -6,6 +6,7 @@
 
 #include "fprintddeviceinterface.h"
 #include "fprintdmanagerinterface.h"
+#include "utils/appstate.h"
 #include "utils/logger.h"
 
 #define FPRINTD_SERVICE "net.reactivated.Fprint"
@@ -14,7 +15,7 @@ class FingerboardCppInterface : public QObject {
   Q_OBJECT
 
  public:
-  FingerboardCppInterface(QObject *parent = nullptr);
+  FingerboardCppInterface(AppState *appState, QObject *parent = nullptr);
   Logger *logger;
 
  public slots:
@@ -35,6 +36,7 @@ class FingerboardCppInterface : public QObject {
   QDBusInterface *fprintdDevicePropertiesInterface;
   QString username = qgetenv("USER");
   QString defaultDevicePath;
+  AppState *appState;
 
   bool claimFpDevice();
   void releaseFpDevice();

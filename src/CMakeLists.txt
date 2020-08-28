@@ -8,6 +8,7 @@ set(
   interfaces/fingerboard_cpp_interface.cpp
 
   utils/logger.cpp
+  utils/appstate.cpp
 )
 
 set(
