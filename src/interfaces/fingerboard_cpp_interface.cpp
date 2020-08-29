@@ -9,7 +9,9 @@ FingerboardCppInterface::FingerboardCppInterface(AppState* appState,
     : QObject(parent) {
   this->appState = appState;
   logger = new Logger(parent);
-  connect(logger, &Logger::writeLog, [=](QString msg) { emit log(msg); });
+  connect(logger, &Logger::writeLog, [=](Logger::Level logLevel, QString msg) {
+    emit log(logLevel, msg);
+  });
 }
 
 void FingerboardCppInterface::init() {
@@ -86,7 +88,8 @@ void FingerboardCppInterface::deviceInfo() {
 
 void FingerboardCppInterface::listFp() {
   if (claimFpDevice()) {
-    logger->log(Logger::DEBUG, "Start Listing FP");
+    logger->log(Logger::VERBOSE, "Start Listing FP");
+    logger->log(Logger::INFO, "Listing Fingerprints");
 
     QDBusPendingReply<QStringList> listEnrolledFingersReply =
         fprintdInterfaceDevice->ListEnrolledFingers(username);
@@ -100,13 +103,13 @@ void FingerboardCppInterface::listFp() {
     } else {
       QStringList enrolledFingersList = listEnrolledFingersReply.value();
 
-      logger->log(Logger::VERBOSE, "ENROLLED FINGERPRINTS");
+      logger->log(Logger::DEBUG, "ENROLLED FINGERPRINTS");
       for (QString finger : enrolledFingersList) {
-        logger->log(Logger::VERBOSE, QString("  - %1").arg(finger));
+        logger->log(Logger::DEBUG, QString("  - %1").arg(finger));
       }
     }
 
-    logger->log(Logger::DEBUG, "End Listing FP");
+    logger->log(Logger::VERBOSE, "End Listing FP");
     releaseFpDevice();
     emit operationComplete();
   }
@@ -114,8 +117,9 @@ void FingerboardCppInterface::listFp() {
 
 void FingerboardCppInterface::enrollFp(QString finger) {
   if (claimFpDevice()) {
-    logger->log(Logger::DEBUG,
+    logger->log(Logger::VERBOSE,
                 QString("Start Enrolling FP : [%1]").arg(finger));
+    logger->log(Logger::INFO, "Starting Enrolling Fingerprint");
 
     QDBusPendingReply enrollStartReply =
         fprintdInterfaceDevice->EnrollStart(finger);
@@ -128,7 +132,7 @@ void FingerboardCppInterface::enrollFp(QString finger) {
                                      .arg(enrollStartReply.error().name())
                                      .arg(enrollStartReply.error().message()));
 
-      logger->log(Logger::DEBUG, "End Enrolling FP");
+      logger->log(Logger::VERBOSE, "End Enrolling FP");
       releaseFpDevice();
     } else {
       logger->log(Logger::VERBOSE, "Touch/Swipe to continue Enrolling");
@@ -138,8 +142,9 @@ void FingerboardCppInterface::enrollFp(QString finger) {
 
 void FingerboardCppInterface::verifyFp(QString finger) {
   if (claimFpDevice()) {
-    logger->log(Logger::DEBUG,
+    logger->log(Logger::VERBOSE,
                 QString("Start Verifying FP : [%1]").arg(finger));
+    logger->log(Logger::INFO, "Starting Verifying Fingerprint");
 
     QDBusPendingReply verifyStartReply =
         fprintdInterfaceDevice->VerifyStart(finger);
@@ -152,7 +157,7 @@ void FingerboardCppInterface::verifyFp(QString finger) {
                                      .arg(verifyStartReply.error().name())
                                      .arg(verifyStartReply.error().message()));
 
-      logger->log(Logger::DEBUG, "End Verifying FP");
+      logger->log(Logger::VERBOSE, "End Verifying FP");
       releaseFpDevice();
     } else {
       logger->log(Logger::VERBOSE, "Touch/Swipe to continue Verifying");
@@ -162,7 +167,8 @@ void FingerboardCppInterface::verifyFp(QString finger) {
 
 void FingerboardCppInterface::deleteFp() {
   if (claimFpDevice()) {
-    logger->log(Logger::DEBUG, "Start Deleting FP");
+    logger->log(Logger::VERBOSE, "Start Deleting FP");
+    logger->log(Logger::INFO, "Deleting Fingerprints");
 
     logger->log(
         Logger::INFO,
@@ -181,7 +187,7 @@ void FingerboardCppInterface::deleteFp() {
                       .arg(deleteEnrolledFingers2Reply.error().message()));
     }
 
-    logger->log(Logger::DEBUG, "End Deleting FP");
+    logger->log(Logger::VERBOSE, "End Deleting FP");
     releaseFpDevice();
     emit operationComplete();
   }
@@ -199,7 +205,7 @@ void FingerboardCppInterface::enrollStatusSlot(QString result, bool done) {
     enrollStopReply.waitForFinished();
     logger->log(Logger::INFO,
                 QString("Enroll Ended with status [%1]").arg(result));
-    logger->log(Logger::DEBUG, "End Enrolling FP");
+    logger->log(Logger::VERBOSE, "End Enrolling FP");
     releaseFpDevice();
     emit operationComplete();
   }
@@ -216,14 +222,14 @@ void FingerboardCppInterface::verifyStatusSlot(QString result, bool done) {
     verifyStopReply.waitForFinished();
     logger->log(Logger::INFO,
                 QString("Verify Ended with status [%1]").arg(result));
-    logger->log(Logger::DEBUG, "End Verifying FP");
+    logger->log(Logger::VERBOSE, "End Verifying FP");
     releaseFpDevice();
     emit operationComplete();
   }
 }
 
 bool FingerboardCppInterface::claimFpDevice() {
-  logger->log(Logger::INFO, "Claiming Fingerprint Device");
+  logger->log(Logger::DEBUG, "Claiming Fingerprint Device");
 
   QDBusPendingReply claimReply = fprintdInterfaceDevice->Claim(QString());
   claimReply.waitForFinished();
@@ -242,7 +248,7 @@ bool FingerboardCppInterface::claimFpDevice() {
 }
 
 void FingerboardCppInterface::releaseFpDevice() {
-  logger->log(Logger::INFO, "Releasing Fingerprint Device");
+  logger->log(Logger::DEBUG, "Releasing Fingerprint Device");
 
   QDBusPendingReply releaseReply = fprintdInterfaceDevice->Release();
 

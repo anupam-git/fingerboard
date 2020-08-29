@@ -10,15 +10,16 @@ class Logger : public QObject {
   Q_OBJECT
 
  public:
-  enum Level { INFO, DEBUG, VERBOSE, WARNING, ERROR, CRITICAL };
+  enum Level { ERROR = 0, WARNING, INFO, DEBUG, VERBOSE };
+  Q_ENUM(Level)
 
   Logger(QObject *parent = nullptr);
   ~Logger();
 
-  void log(Level level, QString msg);
+  void log(Logger::Level level, QString msg);
 
  signals:
-  void writeLog(QString msg);
+  void writeLog(Logger::Level logLevel, QString msg);
 
  private:
   QFile *file;

@@ -1,5 +1,5 @@
-#ifndef INTERFACES_FINGERBOARD_CPP_INTERFACE
-#define INTERFACES_FINGERBOARD_CPP_INTERFACE
+#ifndef INTERFACES_FINGERBOARD_CPP_INTERFACE_H
+#define INTERFACES_FINGERBOARD_CPP_INTERFACE_H
 
 #include <QDBusInterface>
 #include <QObject>
@@ -27,7 +27,7 @@ class FingerboardCppInterface : public QObject {
   void deleteFp();
 
  signals:
-  void log(QString msg);
+  void log(int logLevel, QString msg);
   void operationComplete();
 
  private:
@@ -46,4 +46,4 @@ class FingerboardCppInterface : public QObject {
   void verifyStatusSlot(QString result, bool done);
 };
 
-#endif  // INTERFACES_FINGERBOARD_CPP_INTERFACE
+#endif  // INTERFACES_FINGERBOARD_CPP_INTERFACE_H

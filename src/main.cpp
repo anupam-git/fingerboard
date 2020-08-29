@@ -13,6 +13,8 @@ void registerQmlTypes(QObject *parent = nullptr) {
       "Fingerboard", 1, 0, "FingerboardCppInterface", fingerboardCppInterface);
   qmlRegisterSingletonInstance<AppState>("Fingerboard", 1, 0, "AppState",
                                          appState);
+  qmlRegisterUncreatableType<Logger>("Fingerboard", 1, 0, "Logger",
+                                     "Logger can be used from c++ only");
 }
 
 int main(int argc, char *argv[]) {

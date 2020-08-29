@@ -41,17 +41,13 @@ void Logger::log(Logger::Level level, QString msg) {
     case Level::ERROR:
       logLevel = "[ERROR]";
       break;
-
-    case Level::CRITICAL:
-      logLevel = "[CRITICAL]";
-      break;
   }
 
   QString logMsg = format.arg(logLevel, 10).arg(timestamp, 22).arg(msg);
   QTextStream ts(file);
   ts << logMsg << Qt::endl;
 
-  emit writeLog(logMsg);
+  emit writeLog(level, logMsg);
 }
 
 Logger::~Logger() { file->close(); }
