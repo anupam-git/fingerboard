@@ -28,7 +28,6 @@ class FingerboardCppInterface : public QObject {
 
  signals:
   void log(int logLevel, QString msg);
-  void operationComplete();
 
  private:
   net::reactivated::Fprint::Device *fprintdInterfaceDevice;

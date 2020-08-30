@@ -79,7 +79,6 @@ void FingerboardCppInterface::deviceInfo() {
                 QString("    Enroll Stages : %1").arg(enrollStages));
 
     releaseFpDevice();
-    emit operationComplete();
   }
 }
 
@@ -108,7 +107,6 @@ void FingerboardCppInterface::listFp() {
 
     logger->log(Logger::VERBOSE, "End Listing FP");
     releaseFpDevice();
-    emit operationComplete();
   }
 }
 
@@ -186,7 +184,6 @@ void FingerboardCppInterface::deleteFp() {
 
     logger->log(Logger::VERBOSE, "End Deleting FP");
     releaseFpDevice();
-    emit operationComplete();
   }
 }
 
@@ -204,7 +201,6 @@ void FingerboardCppInterface::enrollStatusSlot(QString result, bool done) {
                 QString("Enroll Ended with status [%1]").arg(result));
     logger->log(Logger::VERBOSE, "End Enrolling FP");
     releaseFpDevice();
-    emit operationComplete();
   }
 }
 
@@ -221,7 +217,6 @@ void FingerboardCppInterface::verifyStatusSlot(QString result, bool done) {
                 QString("Verify Ended with status [%1]").arg(result));
     logger->log(Logger::VERBOSE, "End Verifying FP");
     releaseFpDevice();
-    emit operationComplete();
   }
 }
 
