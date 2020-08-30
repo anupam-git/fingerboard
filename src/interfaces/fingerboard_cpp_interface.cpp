@@ -80,9 +80,6 @@ void FingerboardCppInterface::deviceInfo() {
 
     releaseFpDevice();
     emit operationComplete();
-
-    appState->setState(AppState::IDLE);
-    emit appState->stateChanged();
   }
 }
 
