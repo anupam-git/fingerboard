@@ -91,7 +91,6 @@ class AppState : public QObject {
  signals:
 
  private:
-  AppState::ErrorStatus _errorStatus;
 };
 
 #endif  // UTILS_APPSTATE_H
