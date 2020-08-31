@@ -9,6 +9,7 @@ import Fingerboard 1.0
 Controls1.ApplicationWindow {
     property bool showLogs: false
 
+    id: appWindow
     minimumWidth: 1000
     minimumHeight: 800
     title: "Fingerboard"
@@ -40,6 +41,15 @@ Controls1.ApplicationWindow {
     }
     Material.theme: Material.Light
     Material.accent: Material.Blue
+
+    Connections {
+        target: AppState
+
+        function onError(errorStatus, errorString) {
+            var component = Qt.createComponent("ErrorDialog.qml");
+            component.createObject(appWindow, { errorString: errorString });
+        }
+    }
 
     Controls1.SplitView {
         anchors.fill: parent

@@ -1,6 +1,7 @@
 #ifndef UTILS_APPSTATE_H
 #define UTILS_APPSTATE_H
 
+#include <QMap>
 #include <QObject>
 #include <QSet>
 #include <QString>
@@ -10,33 +11,15 @@ class AppState : public QObject {
 
  public:
   enum ErrorStatus {
-    ERROR_NONE,
+    ERROR_NO_DEVICE,
 
-    ERROR_LIST_PERMISSION_DENIED,
-    ERROR_LIST_NO_ENROLLED_PRINTS,
-
-    ERROR_DELETE_PERMISSION_DENIED,
-
-    ERROR_CLAIM_PERMISSION_DENIED,
-    ERROR_CLAIM_ALREADY_IN_USE,
-    ERROR_CLAIM_INTERNAL,
-
-    ERROR_RELEASE_PERMISSION_DENIED,
-    ERROR_RELEASE_CLAIM_DEVICE,
-
-    ERROR_VERIFY_PERMISSION_DENIED,
-    ERROR_VERIFY_CLAIM_DEVICE,
-    ERROR_VERIFY_ALREADY_IN_USE,
-    ERROR_VERIFY_NO_ENROLLED_PRINTS,
-    ERROR_VERIFY_NO_ACTION_IN_PROGRESS,
-    ERROR_VERIFY_INTERNAL,
-
-    ERROR_ENROLL_PERMISSION_DENIED,
-    ERROR_ENROLL_CLAIM_DEVICE,
-    ERROR_ENROLL_ALREADY_IN_USE,
-    ERROR_ENROLL_INVALID_FINGERNAME,
-    ERROR_ENROLL_NO_ACTION_IN_PROGRESS,
-    ERROR_ENROLL_INTERNAL
+    ERROR_PERMISSION_DENIED,
+    ERROR_NO_ENROLLED_PRINTS,
+    ERROR_ALREADY_IN_USE,
+    ERROR_INTERNAL,
+    ERROR_CLAIM_DEVICE,
+    ERROR_NO_ACTION_IN_PROGRESS,
+    ERROR_INVALID_FINGERNAME,
   };
   Q_ENUM(ErrorStatus);
 
@@ -82,6 +65,9 @@ class AppState : public QObject {
 
   AppState(QObject *parent = nullptr);
 
+  void raiseError(QString rawError);
+  void raiseError(AppState::ErrorStatus errorStatus);
+
  public slots:
   QString errorStatusString(AppState::ErrorStatus status);
   QString enrollStatusString(AppState::EnrollStatus status);
@@ -89,8 +75,23 @@ class AppState : public QObject {
   QString fingerString(AppState::Finger finger);
 
  signals:
+  void error(int errorStatus, QString errorString);
 
  private:
+  QMap<QString, AppState::ErrorStatus> rawErrorMap = {
+      {"net.reactivated.Fprint.Error.PermissionDenied",
+       ErrorStatus::ERROR_PERMISSION_DENIED},
+      {"net.reactivated.Fprint.Error.NoEnrolledPrints",
+       ErrorStatus::ERROR_NO_ENROLLED_PRINTS},
+      {"net.reactivated.Fprint.Error.AlreadyInUse",
+       ErrorStatus::ERROR_ALREADY_IN_USE},
+      {"net.reactivated.Fprint.Error.Internal", ErrorStatus::ERROR_INTERNAL},
+      {"net.reactivated.Fprint.Error.ClaimDevice",
+       ErrorStatus::ERROR_CLAIM_DEVICE},
+      {"net.reactivated.Fprint.Error.NoActionInProgress",
+       ErrorStatus::ERROR_NO_ACTION_IN_PROGRESS},
+      {"net.reactivated.Fprint.Error.InvalidFingername",
+       ErrorStatus::ERROR_INVALID_FINGERNAME}};
 };
 
 #endif  // UTILS_APPSTATE_H

@@ -2,68 +2,33 @@
 
 AppState::AppState(QObject *parent) : QObject(parent) {}
 
+void AppState::raiseError(QString rawError) {
+  ErrorStatus errorStatus = rawErrorMap[rawError];
+  emit error(errorStatus, errorStatusString(errorStatus));
+}
+
+void AppState::raiseError(AppState::ErrorStatus errorStatus) {
+  emit error(errorStatus, errorStatusString(errorStatus));
+}
+
 QString AppState::errorStatusString(AppState::ErrorStatus status) {
   switch (status) {
-    case AppState::ErrorStatus::ERROR_NONE:
-      return "";
-
-    // LIST
-    case AppState::ErrorStatus::ERROR_LIST_PERMISSION_DENIED:
+    case AppState::ErrorStatus::ERROR_NO_DEVICE:
+      return "No Fingerprint Reader found";
+    case AppState::ErrorStatus::ERROR_PERMISSION_DENIED:
       return "User lacks the appropriate PolicyKit authorization";
-    case AppState::ErrorStatus::ERROR_LIST_NO_ENROLLED_PRINTS:
+    case AppState::ErrorStatus::ERROR_NO_ENROLLED_PRINTS:
       return "User doesn't have any fingerprints enrolled";
-    // END LIST
-
-    // DELETE
-    case AppState::ErrorStatus::ERROR_DELETE_PERMISSION_DENIED:
-      return "User lacks the appropriate PolicyKit authorization";
-    // END DELETE
-
-    // CLAIM
-    case AppState::ErrorStatus::ERROR_CLAIM_PERMISSION_DENIED:
-      return "User lacks the appropriate PolicyKit authorization";
-    case AppState::ErrorStatus::ERROR_CLAIM_ALREADY_IN_USE:
+    case AppState::ErrorStatus::ERROR_ALREADY_IN_USE:
       return "Device is already claimed";
-    case AppState::ErrorStatus::ERROR_CLAIM_INTERNAL:
+    case AppState::ErrorStatus::ERROR_INTERNAL:
       return "Device couldn't be claimed";
-    // END CLAIM
-
-    // RELEASE
-    case AppState::ErrorStatus::ERROR_RELEASE_PERMISSION_DENIED:
-      return "User lacks the appropriate PolicyKit authorization";
-    case AppState::ErrorStatus::ERROR_RELEASE_CLAIM_DEVICE:
+    case AppState::ErrorStatus::ERROR_CLAIM_DEVICE:
       return "Device was not claimed";
-    // EMD RELEASE
-
-    // VERIFY
-    case AppState::ErrorStatus::ERROR_VERIFY_PERMISSION_DENIED:
-      return "User lacks the appropriate PolicyKit authorization";
-    case AppState::ErrorStatus::ERROR_VERIFY_CLAIM_DEVICE:
-      return "Device was not claimed";
-    case AppState::ErrorStatus::ERROR_VERIFY_ALREADY_IN_USE:
-      return "Device is already being used by another application or user";
-    case AppState::ErrorStatus::ERROR_VERIFY_NO_ENROLLED_PRINTS:
-      return "User doesn't have any fingerprints enrolled";
-    case AppState::ErrorStatus::ERROR_VERIFY_NO_ACTION_IN_PROGRESS:
+    case AppState::ErrorStatus::ERROR_NO_ACTION_IN_PROGRESS:
       return "There are no ongoing verification";
-    case AppState::ErrorStatus::ERROR_VERIFY_INTERNAL:
-      return "Internal error occured";
-    // END VERIFY
-
-    // ENROLL
-    case AppState::ErrorStatus::ERROR_ENROLL_PERMISSION_DENIED:
-      return "User lacks the appropriate PolicyKit authorization";
-    case AppState::ErrorStatus::ERROR_ENROLL_CLAIM_DEVICE:
-      return "Device was not claimed";
-    case AppState::ErrorStatus::ERROR_ENROLL_ALREADY_IN_USE:
-      return "Device is already being used by another application or user";
-    case AppState::ErrorStatus::ERROR_ENROLL_INVALID_FINGERNAME:
+    case AppState::ErrorStatus::ERROR_INVALID_FINGERNAME:
       return "Finger name passed is invalid";
-    case AppState::ErrorStatus::ERROR_ENROLL_NO_ACTION_IN_PROGRESS:
-      return "There are no ongoing verification";
-    case AppState::ErrorStatus::ERROR_ENROLL_INTERNAL:
-      return "Internal error occured";
-      // END ENROLL
   }
 
   return "";

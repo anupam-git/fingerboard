@@ -27,22 +27,28 @@ void FingerboardCppInterface::init() {
   defaultDevicePathReply.waitForFinished();
   defaultDevicePath = defaultDevicePathReply.value().path();
 
-  logger->log(
-      Logger::DEBUG,
-      QString("Default Device Object Path : %1").arg(defaultDevicePath));
+  if (defaultDevicePath.size() > 0) {
+    logger->log(
+        Logger::DEBUG,
+        QString("Default Device Object Path : %1").arg(defaultDevicePath));
 
-  fprintdInterfaceDevice = new net::reactivated::Fprint::Device(
-      QString(FPRINTD_SERVICE), defaultDevicePath, bus, this);
-  fprintdDevicePropertiesInterface =
-      new QDBusInterface(QString(FPRINTD_SERVICE), defaultDevicePath,
-                         QString("org.freedesktop.DBus.Properties"), bus, this);
+    fprintdInterfaceDevice = new net::reactivated::Fprint::Device(
+        QString(FPRINTD_SERVICE), defaultDevicePath, bus, this);
+    fprintdDevicePropertiesInterface = new QDBusInterface(
+        QString(FPRINTD_SERVICE), defaultDevicePath,
+        QString("org.freedesktop.DBus.Properties"), bus, this);
 
-  connect(fprintdInterfaceDevice, SIGNAL(EnrollStatus(QString, bool)), this,
-          SLOT(enrollStatusSlot(QString, bool)));
-  connect(fprintdInterfaceDevice, SIGNAL(VerifyStatus(QString, bool)), this,
-          SLOT(verifyStatusSlot(QString, bool)));
+    connect(fprintdInterfaceDevice, SIGNAL(EnrollStatus(QString, bool)), this,
+            SLOT(enrollStatusSlot(QString, bool)));
+    connect(fprintdInterfaceDevice, SIGNAL(VerifyStatus(QString, bool)), this,
+            SLOT(verifyStatusSlot(QString, bool)));
 
-  deviceInfo();
+    deviceInfo();
+  } else {
+    logger->log(Logger::ERROR, appState->errorStatusString(
+                                   AppState::ErrorStatus::ERROR_NO_DEVICE));
+    appState->raiseError(AppState::ErrorStatus::ERROR_NO_DEVICE);
+  }
 }
 
 void FingerboardCppInterface::deviceInfo() {
