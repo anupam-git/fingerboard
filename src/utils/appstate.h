@@ -9,7 +9,7 @@ class AppState : public QObject {
   Q_OBJECT
 
  public:
-  enum class ErrorStatus {
+  enum ErrorStatus {
     ERROR_NONE,
 
     ERROR_LIST_PERMISSION_DENIED,
@@ -40,7 +40,7 @@ class AppState : public QObject {
   };
   Q_ENUM(ErrorStatus);
 
-  enum class EnrollStatus {
+  enum EnrollStatus {
     ENROLL_COMPLETED,
     ENROLL_FAILED,
     ENROLL_STAGE_PASSED,
@@ -54,7 +54,7 @@ class AppState : public QObject {
   };
   Q_ENUM(EnrollStatus)
 
-  enum class VerifyStatus {
+  enum VerifyStatus {
     VERIFY_NO_MATCH,
     VERIFY_MATCH,
     VERIFY_RETRY_SCAN,
@@ -66,7 +66,7 @@ class AppState : public QObject {
   };
   Q_ENUM(VerifyStatus)
 
-  enum class Finger {
+  enum Finger {
     FINGER_LEFT_THUMB,
     FINGER_LEFT_INDEX,
     FINGER_LEFT_MIDDLE,

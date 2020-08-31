@@ -1,10 +1,11 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 
 import Fingerboard 1.0
 
-Item {
+Rectangle {
     Connections {
         target: FingerboardCppInterface
 
@@ -27,7 +28,7 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             height: 50
-            color: "#dfdfdf"
+            color: "#f5f5f5"
 
             RowLayout {
                 anchors {
@@ -39,18 +40,14 @@ Item {
                 Label {
                     text: "Log Level"
                     Layout.margins: 10
+                    font.pixelSize: 12
                 }
 
                 ComboBox {
                     id: logLevelDropdown
-                    Layout.fillHeight: true
-                    Layout.margins: 10
                     currentIndex: 2
+                    font.pixelSize: 12
 
-                    background: Rectangle {
-                        color: "#fff"
-                        implicitWidth: 150
-                    }
                     model: ListModel {
                         id: logLevelModel
 
@@ -79,6 +76,10 @@ Item {
                         logPane.forceLayout();
                     }
                     textRole: "text"
+                    delegate: ItemDelegate {
+                        text: model.text
+                        font.pixelSize: 12
+                    }
 
                     function selected() {
                         return logLevelModel.get(currentIndex);
@@ -89,7 +90,9 @@ Item {
                     id: colorize
 
                     checked: true
+                    font.pixelSize: 12
                     text: "Colorize"
+                    Material.primary: Material.Blue
                 }
             }
 
@@ -97,6 +100,7 @@ Item {
                 width: 50
                 height: 50
                 icon.name: "window-close"
+                flat: true
 
                 anchors {
                     right: parent.right
@@ -124,7 +128,7 @@ Item {
                 property bool shouldShow: model.logLevel <= logLevelDropdown.selected().level
 
                 width: parent.width
-                color: colorize.checked ? logPane.getColor(model.logLevel) : "black"
+                color: colorize.checked ? logPane.getColor(model.logLevel) : Material.color(Material.Grey, Material.Shade800);
                 text: model.text
                 font.family: 'monospace'
                 height: shouldShow ? implicitHeight : 0
@@ -134,15 +138,15 @@ Item {
             function getColor(logLevel) {
                 switch (logLevel) {
                     case Logger.ERROR:
-                        return "red";
+                        return Material.color(Material.Red);
                     case Logger.WARNING:
-                        return "yellow";
+                        return Material.color(Material.Orange);
                     case Logger.INFO:
-                        return "blue";
+                        return Material.color(Material.Blue);
                     case Logger.DEBUG:
-                        return "black";
+                        return Material.color(Material.Grey, Material.Shade800);
                     case Logger.VERBOSE:
-                        return "grey";
+                        return Material.color(Material.Grey);
                 }
             }
         }

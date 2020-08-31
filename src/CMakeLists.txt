@@ -15,6 +15,7 @@ set(
   FINGERBOARD_QML
 
   qml/qml.qrc
+  assets/assets.qrc
 )
 
 qt5_add_dbus_interfaces(
@@ -40,5 +41,6 @@ target_link_libraries(
   Qt5::Qml
   Qt5::Quick
   Qt5::DBus
+  Qt5::QuickControls2
 )
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)

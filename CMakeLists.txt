@@ -21,6 +21,7 @@ find_package(
         Qml
         Quick
         DBus
+        QuickControls2
 )
 
 include(ECMSetupVersion)
