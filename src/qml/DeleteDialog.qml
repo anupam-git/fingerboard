@@ -20,7 +20,7 @@ Dialog {
             flat: true
             text: "CANCEL"
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             hoverEnabled: true
 
@@ -32,7 +32,7 @@ Dialog {
             flat: true
             text: "<font color='"+Material.color(Material.Red)+"'>DELETE</font>"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             hoverEnabled: true
 
@@ -52,7 +52,7 @@ Dialog {
     ColumnLayout {
         Label {
             text: "Delete Fingerprints"
-            font.pixelSize: 15
+            font.pixelSize: 16
             font.bold: true
             topPadding: 16
             bottomPadding: 16
@@ -61,7 +61,7 @@ Dialog {
 
         Label {
             text: "Are you sure you wish to delete <b>ALL</b> fingerprints ?"
-            font.pixelSize: 12
+            font.pixelSize: 14
             leftPadding: 12
         }
     }

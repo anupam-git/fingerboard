@@ -140,7 +140,7 @@ Rectangle {
 
                         Label {
                             text: "Left Hand"
-                            font.pixelSize: 12
+                            font.pixelSize: 14
                             font.bold: true
                             color: Material.color(Material.Grey, Material.Shade600)
                         }
@@ -170,7 +170,7 @@ Rectangle {
 
                         Label {
                             text: "Right Hand"
-                            font.pixelSize: 12
+                            font.pixelSize: 14
                             font.bold: true
                             color: Material.color(Material.Grey, Material.Shade600)
                         }
@@ -191,7 +191,7 @@ Rectangle {
         Button {
             Layout.fillWidth: true
             text: "<font color='white'>VERIFY FINGERPRINT</font>"
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             bottomInset: 0
             topInset: 0

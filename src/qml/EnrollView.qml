@@ -126,7 +126,7 @@ Rectangle {
             Layout.preferredWidth: 128
             Layout.preferredHeight: 45
             text: "<font color='white'>START</font>"
-            font.pixelSize: 10
+            font.pixelSize: 12
             font.bold: true
             hoverEnabled: true
             Layout.alignment: Qt.AlignHCenter

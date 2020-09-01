@@ -24,6 +24,7 @@ QString FingerboardCppInterface::getScanType() { return _scanType; }
 int FingerboardCppInterface::getNumEnrollStages() { return _numEnrollStages; }
 
 void FingerboardCppInterface::init() {
+  logger->log(Logger::INFO, QString("Log Location : %1").arg(logger->path()));
   logger->log(Logger::INFO, "Initializing Fingerboard");
 
   QDBusConnection bus = QDBusConnection::systemBus();

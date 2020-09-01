@@ -49,4 +49,6 @@ void Logger::log(Logger::Level level, QString msg) {
   emit writeLog(level, logMsg);
 }
 
+QString Logger::path() { return file->fileName(); }
+
 Logger::~Logger() { file->close(); }

@@ -26,7 +26,7 @@ Rectangle {
         Label {
             Layout.fillWidth: true
             text: model.text
-            font.pixelSize: 12
+            font.pixelSize: 13
             color: Material.color(Material.Grey, Material.Shade600)
             opacity: model.enrolled ? 1 : 0.5
         }

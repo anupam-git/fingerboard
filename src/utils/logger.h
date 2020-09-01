@@ -17,6 +17,7 @@ class Logger : public QObject {
   ~Logger();
 
   void log(Logger::Level level, QString msg);
+  QString path();
 
  signals:
   void writeLog(Logger::Level logLevel, QString msg);
