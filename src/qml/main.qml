@@ -3,6 +3,7 @@ import QtQuick.Controls 1.4 as Controls1
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Material 2.15
+import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
 
@@ -49,6 +50,34 @@ Controls1.ApplicationWindow {
         function onError(errorStatus, errorString) {
             var component = Qt.createComponent("ErrorDialog.qml");
             component.createObject(appWindow, { errorString: errorString });
+        }
+    }
+
+    Image {
+        width: 24
+        height: 24
+        source: "qrc:/info.svg"
+        anchors {
+            right: parent.right
+            top: parent.top
+            margins: 24
+        }
+
+        ColorOverlay {
+            anchors.fill: parent
+            source: parent
+            color: Material.color(Material.Grey, Material.Shade700)
+        }
+
+        ToolTip.text: `<b>Device:</b> ${FingerboardCppInterface.deviceName}<br><b>Scan Type:</b> ${FingerboardCppInterface.scanType}<br><b>Enroll Stages:</b> ${FingerboardCppInterface.numEnrollStages}`
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+
+            onContainsMouseChanged: {
+                parent.ToolTip.visible = containsMouse;
+            }
         }
     }
 

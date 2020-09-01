@@ -6,5 +6,6 @@
         <file>edit.svg</file>
         <file>delete.svg</file>
         <file>back.svg</file>
+        <file>info.svg</file>
     </qresource>
 </RCC>
