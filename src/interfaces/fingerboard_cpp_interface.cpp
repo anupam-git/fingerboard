@@ -143,7 +143,7 @@ void FingerboardCppInterface::listFp() {
   }
 }
 
-void FingerboardCppInterface::enrollFp(int finger) {
+bool FingerboardCppInterface::enrollFp(int finger) {
   if (claimFpDevice()) {
     logger->log(Logger::VERBOSE,
                 QString("Start Enrolling FP : [%1]").arg(finger));
@@ -163,14 +163,18 @@ void FingerboardCppInterface::enrollFp(int finger) {
       appState->raiseError(enrollStartReply.error().name());
       logger->log(Logger::VERBOSE, "End Enrolling FP");
       releaseFpDevice();
+
+      return false;
     } else {
       logger->log(Logger::VERBOSE, "Touch/Swipe to start Enrolling");
       appState->setEnrollStatus(AppState::ENROLL_START);
     }
   }
+
+  return true;
 }
 
-void FingerboardCppInterface::verifyFp(QString finger) {
+bool FingerboardCppInterface::verifyFp(QString finger) {
   if (claimFpDevice()) {
     logger->log(Logger::VERBOSE,
                 QString("Start Verifying FP : [%1]").arg(finger));
@@ -190,11 +194,15 @@ void FingerboardCppInterface::verifyFp(QString finger) {
       appState->raiseError(verifyStartReply.error().name());
       logger->log(Logger::VERBOSE, "End Verifying FP");
       releaseFpDevice();
+
+      return false;
     } else {
       logger->log(Logger::VERBOSE, "Touch/Swipe to continue Verifying");
       appState->setVerifyStatus(AppState::VERIFY_START);
     }
   }
+
+  return true;
 }
 
 void FingerboardCppInterface::deleteFp() {

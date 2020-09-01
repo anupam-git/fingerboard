@@ -53,7 +53,7 @@ Rectangle {
                     if (enrollCompleted) {
                         return Material.color(Material.Green)
                     } else if (enrollErrored) {
-                        return Material.color(Material.Red)
+                        return Material.color(Material.Red, Material.Shade300)
                     } else {
                         return Material.color(Material.Blue)
                     }
@@ -61,8 +61,8 @@ Rectangle {
             }
 
             Image {
-                width: 100
-                height: 100
+                width: 128
+                height: 128
                 source: "qrc:/fingerprint.svg"
                 smooth: true
                 anchors.centerIn: parent
@@ -76,7 +76,7 @@ Rectangle {
                         if (enrollCompleted) {
                             return Material.color(Material.Green)
                         } else if (enrollErrored) {
-                            return Material.color(Material.Red)
+                            return Material.color(Material.Red, Material.Shade300)
                         } else {
                             return Material.color(Material.Grey, Material.Shade600)
                         }
@@ -136,8 +136,9 @@ Rectangle {
             Material.background: Material.Blue
 
             onClicked: {
-                enrollStarted = true;
-                FingerboardCppInterface.enrollFp(selectedEnrollingFinger);
+                if (FingerboardCppInterface.enrollFp(selectedEnrollingFinger)) {
+                    enrollStarted = true;
+                }
             }
 
             PointingHandOverlay {

@@ -7,8 +7,24 @@ import QtGraphicalEffects 1.0
 import Fingerboard 1.0
 
 Rectangle {
+    property bool verifyStarted: false
+    property bool verifyCompleted: false
+    property bool verifyErrored: false
+
     width: 600
     height: 700
+
+    Connections {
+        target: AppState
+
+        function onVerifyCompleted() {
+            verifyCompleted = true;
+        }
+
+        function onVerifyErrored() {
+            verifyErrored = true;
+        }
+    }
 
     ColumnLayout {
         width: parent.width
@@ -21,10 +37,21 @@ Rectangle {
 
             CircularProgressBar {
                 lineWidth: 6
-                value: 1.0
+                value: verifyCompleted || verifyErrored ? 1 : 0
                 size: parent.width
-                secondaryColor: "#e0e0e0"
-                primaryColor: Material.color(Material.Red)
+                animationDuration: 200
+                secondaryColor: Material.color(Material.Grey, Material.Shade300)
+                primaryColor: getColor()
+
+                function getColor() {
+                    if (verifyCompleted) {
+                        return Material.color(Material.Green)
+                    } else if (verifyErrored) {
+                        return Material.color(Material.Red, Material.Shade300)
+                    } else {
+                        return Material.color(Material.Blue)
+                    }
+                }
             }
 
             Image {
@@ -37,31 +64,69 @@ Rectangle {
                 ColorOverlay {
                     anchors.fill: parent
                     source: parent
-                    color: Material.color(Material.Red, Material.Shade500)
+                    color: getColor()
+
+                    function getColor() {
+                        if (verifyCompleted) {
+                            return Material.color(Material.Green)
+                        } else if (verifyErrored) {
+                            return Material.color(Material.Red, Material.Shade300)
+                        } else {
+                            return Material.color(Material.Grey, Material.Shade600)
+                        }
+                    }
                 }
             }
         }
 
         Label {
-            visible: false
-            text: "Verifying"
-            font.pixelSize: 30
+            text: "" // Finger.name(selectedEnrollingFinger)
+            font.pixelSize: 12
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 32
-            color: Material.color(Material.Grey, Material.Shade700)
+            Layout.topMargin: 16
+            color: Material.color(Material.Grey)
         }
 
         Label {
-            visible: false
-            text: "Touch/Swipe your finger to Verify"
+            text: getText()
+            font.pixelSize: 30
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 32
+            color: getColor()
+
+            function getText() {
+                if (verifyStarted && !verifyCompleted && !verifyErrored) {
+                    return "Verifying";
+                } else if (verifyStarted && verifyErrored) {
+                    return "No Match";
+                } else if (verifyStarted && verifyCompleted) {
+                    return "Matched";
+                }
+            }
+
+            function getColor() {
+                if (verifyCompleted) {
+                    return Material.color(Material.Green);
+                } else if (verifyErrored) {
+                    return Material.color(Material.Red, Material.Shade300);
+                } else {
+                    return Material.color(Material.Blue, Material.Shade600);
+                }
+            }
+        }
+
+        Label {
+            visible: verifyStarted
+            text: AppState.verifyStatusString
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 128
-            font.pixelSize: 12
+            font.pixelSize: 15
             color: Material.color(Material.Grey, Material.Shade500)
         }
 
         Button {
+            visible: !verifyStarted
             Layout.preferredWidth: 128
             Layout.preferredHeight: 45
             text: "<font color='white'>START</font>"
@@ -69,13 +134,15 @@ Rectangle {
             font.bold: true
             hoverEnabled: true
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 128
+            Layout.topMargin: 185
 
             Material.elevation: 0
             Material.background: Material.Blue
 
             onClicked: {
-                console.log("Start Verifying");
+                if (FingerboardCppInterface.verifyFp()) {
+                    verifyStarted = true;
+                }
             }
 
             PointingHandOverlay {
