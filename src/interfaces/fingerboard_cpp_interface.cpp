@@ -99,9 +99,10 @@ void FingerboardCppInterface::listFp() {
 
     if (listEnrolledFingersReply.error().isValid()) {
       logger->log(Logger::ERROR,
-                  QString("ERROR[%1] : %2")
+                  QString("%1 : %2")
                       .arg(listEnrolledFingersReply.error().name())
                       .arg(listEnrolledFingersReply.error().message()));
+      appState->raiseError(listEnrolledFingersReply.error().name());
     } else {
       QStringList enrolledFingersList = listEnrolledFingersReply.value();
 
@@ -133,6 +134,7 @@ void FingerboardCppInterface::enrollFp(QString finger) {
                                      .arg(enrollStartReply.error().name())
                                      .arg(enrollStartReply.error().message()));
 
+      appState->raiseError(enrollStartReply.error().name());
       logger->log(Logger::VERBOSE, "End Enrolling FP");
       releaseFpDevice();
     } else {
@@ -158,6 +160,7 @@ void FingerboardCppInterface::verifyFp(QString finger) {
                                      .arg(verifyStartReply.error().name())
                                      .arg(verifyStartReply.error().message()));
 
+      appState->raiseError(verifyStartReply.error().name());
       logger->log(Logger::VERBOSE, "End Verifying FP");
       releaseFpDevice();
     } else {
@@ -186,6 +189,7 @@ void FingerboardCppInterface::deleteFp() {
                   QString("%1 : %2")
                       .arg(deleteEnrolledFingers2Reply.error().name())
                       .arg(deleteEnrolledFingers2Reply.error().message()));
+      appState->raiseError(deleteEnrolledFingers2Reply.error().name());
     }
 
     logger->log(Logger::VERBOSE, "End Deleting FP");
@@ -237,6 +241,7 @@ bool FingerboardCppInterface::claimFpDevice() {
                                    .arg(claimReply.error().name())
                                    .arg(claimReply.error().message()));
 
+    appState->raiseError(claimReply.error().name());
     return false;
   }
 
@@ -254,6 +259,8 @@ void FingerboardCppInterface::releaseFpDevice() {
     logger->log(Logger::ERROR, QString("%1 : %2")
                                    .arg(releaseReply.error().name())
                                    .arg(releaseReply.error().message()));
+
+    appState->raiseError(releaseReply.error().name());
   }
 
   qDebug() << "Release Response :" << releaseReply.reply();
