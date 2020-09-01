@@ -16,27 +16,27 @@ Rectangle {
 
         ListElement {
             text: "Left Thumb"
-            finger: AppState.FINGER_LEFT_THUMB
+            finger: Finger.LEFT_THUMB
             enrolled: false
         }
         ListElement {
             text: "Left Index Finger"
-            finger: AppState.FINGER_LEFT_INDEX
+            finger: Finger.LEFT_INDEX
             enrolled: true
         }
         ListElement {
             text: "Left Middle Finger"
-            finger: AppState.FINGER_LEFT_MIDDLE
+            finger: Finger.LEFT_MIDDLE
             enrolled: false
         }
         ListElement {
             text: "Left Ring Finger"
-            finger: AppState.FINGER_LEFT_RING
+            finger: Finger.LEFT_RING
             enrolled: false
         }
         ListElement {
             text: "Left Little Finger"
-            finger: AppState.FINGER_LEFT_LITTLE
+            finger: Finger.LEFT_LITTLE
             enrolled: false
         }
     }
@@ -45,27 +45,27 @@ Rectangle {
 
         ListElement {
             text: "Right Thumb"
-            finger: AppState.FINGER_RIGHT_THUMB
+            finger: Finger.RIGHT_THUMB
             enrolled: true
         }
         ListElement {
             text: "Right Index Finger"
-            finger: AppState.FINGER_RIGHT_INDEX
+            finger: Finger.RIGHT_INDEX
             enrolled: false
         }
         ListElement {
             text: "Right Middle Finger"
-            finger: AppState.FINGER_RIGHT_MIDDLE
+            finger: Finger.RIGHT_MIDDLE
             enrolled: true
         }
         ListElement {
             text: "Right Ring Finger"
-            finger: AppState.FINGER_RIGHT_RING
+            finger: Finger.RIGHT_RING
             enrolled: false
         }
         ListElement {
             text: "Right Little Finger"
-            finger: AppState.FINGER_RIGHT_LITTLE
+            finger: Finger.RIGHT_LITTLE
             enrolled: false
         }
     }

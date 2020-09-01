@@ -7,6 +7,7 @@
 #include "fprintddeviceinterface.h"
 #include "fprintdmanagerinterface.h"
 #include "utils/appstate.h"
+#include "utils/finger.h"
 #include "utils/logger.h"
 
 #define FPRINTD_SERVICE "net.reactivated.Fprint"
@@ -15,8 +16,8 @@ class FingerboardCppInterface : public QObject {
   Q_OBJECT
 
  public:
-  FingerboardCppInterface(AppState *appState, QObject *parent = nullptr);
-  Logger *logger;
+  FingerboardCppInterface(AppState *appState, Logger *logger,
+                          QObject *parent = nullptr);
 
  public slots:
   void init();
@@ -27,6 +28,7 @@ class FingerboardCppInterface : public QObject {
   void deleteFp();
 
  signals:
+  void enrolledFingerprintsList(QList<Finger::Fingerprint> fingerprints);
   void log(int logLevel, QString msg);
 
  private:
@@ -36,6 +38,7 @@ class FingerboardCppInterface : public QObject {
   QString username = qgetenv("USER");
   QString defaultDevicePath;
   AppState *appState;
+  Logger *logger;
 
   bool claimFpDevice();
   void releaseFpDevice();

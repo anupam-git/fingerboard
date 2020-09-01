@@ -5,10 +5,12 @@
 #include <QString>
 
 FingerboardCppInterface::FingerboardCppInterface(AppState* appState,
+                                                 Logger* logger,
                                                  QObject* parent)
     : QObject(parent) {
   this->appState = appState;
-  logger = new Logger(parent);
+  this->logger = logger;
+
   connect(logger, &Logger::writeLog, [=](Logger::Level logLevel, QString msg) {
     emit log(logLevel, msg);
   });
@@ -104,12 +106,16 @@ void FingerboardCppInterface::listFp() {
                       .arg(listEnrolledFingersReply.error().message()));
       appState->raiseError(listEnrolledFingersReply.error().name());
     } else {
-      QStringList enrolledFingersList = listEnrolledFingersReply.value();
+      QStringList rawEnrolledFingersList = listEnrolledFingersReply.value();
+      QList<Finger::Fingerprint> enrolledFingers;
 
       logger->log(Logger::DEBUG, "ENROLLED FINGERPRINTS");
-      for (QString finger : enrolledFingersList) {
+      for (QString finger : rawEnrolledFingersList) {
         logger->log(Logger::DEBUG, QString("  - %1").arg(finger));
+        enrolledFingers.append(Finger::fromName(finger));
       }
+
+      emit enrolledFingerprintsList(enrolledFingers);
     }
 
     logger->log(Logger::VERBOSE, "End Listing FP");
@@ -138,7 +144,8 @@ void FingerboardCppInterface::enrollFp(QString finger) {
       logger->log(Logger::VERBOSE, "End Enrolling FP");
       releaseFpDevice();
     } else {
-      logger->log(Logger::VERBOSE, "Touch/Swipe to continue Enrolling");
+      logger->log(Logger::VERBOSE, "Touch/Swipe to start Enrolling");
+      appState->setEnrollStatus(AppState::ENROLL_START);
     }
   }
 }
@@ -165,6 +172,7 @@ void FingerboardCppInterface::verifyFp(QString finger) {
       releaseFpDevice();
     } else {
       logger->log(Logger::VERBOSE, "Touch/Swipe to continue Verifying");
+      appState->setVerifyStatus(AppState::VERIFY_START);
     }
   }
 }
@@ -202,9 +210,17 @@ void FingerboardCppInterface::enrollStatusSlot(QString result, bool done) {
       Logger::DEBUG,
       QString("ENROLL STATUS : %1, ENROLL DONE : %2").arg(result).arg(done));
 
+  appState->setEnrollStatus(appState->enrollStatusFromRawString(result));
+
   if (result == "enroll-completed" || result == "enroll-failed" ||
       result == "enroll-data-full" || result == "enroll-unknown-error" ||
       done) {
+    if (result == "enroll-completed") {
+      emit appState->enrollCompleted();
+    } else {
+      emit appState->enrollErrored();
+    }
+
     QDBusPendingReply enrollStopReply = fprintdInterfaceDevice->EnrollStop();
     enrollStopReply.waitForFinished();
     logger->log(Logger::INFO,
@@ -219,8 +235,16 @@ void FingerboardCppInterface::verifyStatusSlot(QString result, bool done) {
       Logger::DEBUG,
       QString("VERIFY STATUS : %1, VERIFY DONE : %2").arg(result).arg(done));
 
+  appState->setVerifyStatus(appState->verifyStatusFromRawString(result));
+
   if (result == "verify-no-match" || result == "verify-match" ||
       result == "verify-unknown-error" || done) {
+    if (result == "verify-match") {
+      emit appState->verifyCompleted();
+    } else {
+      emit appState->verifyErrored();
+    }
+
     QDBusPendingReply verifyStopReply = fprintdInterfaceDevice->VerifyStop();
     verifyStopReply.waitForFinished();
     logger->log(Logger::INFO,

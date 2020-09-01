@@ -4,18 +4,24 @@
 
 #include "interfaces/fingerboard_cpp_interface.h"
 #include "utils/appstate.h"
+#include "utils/finger.h"
 
 void registerQmlTypes(QObject *parent = nullptr) {
+  Logger *logger = new Logger(parent);
   AppState *appState = new AppState(parent);
   FingerboardCppInterface *fingerboardCppInterface =
-      new FingerboardCppInterface(appState, parent);
+      new FingerboardCppInterface(appState, logger, parent);
 
   qmlRegisterSingletonInstance<FingerboardCppInterface>(
       "Fingerboard", 1, 0, "FingerboardCppInterface", fingerboardCppInterface);
   qmlRegisterSingletonInstance<AppState>("Fingerboard", 1, 0, "AppState",
                                          appState);
-  qmlRegisterUncreatableType<Logger>("Fingerboard", 1, 0, "Logger",
-                                     "Logger can be used from c++ only");
+  qmlRegisterUncreatableType<Logger>(
+      "Fingerboard", 1, 0, "Logger",
+      "Logger can be instantiated from c++ only");
+  qmlRegisterUncreatableType<Finger>(
+      "Fingerboard", 1, 0, "Finger",
+      "Finger can be instantiated from c++ only");
 }
 
 int main(int argc, char *argv[]) {

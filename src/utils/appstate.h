@@ -9,6 +9,11 @@
 class AppState : public QObject {
   Q_OBJECT
 
+  Q_PROPERTY(
+      EnrollStatus enrollStatus READ getEnrollStatus NOTIFY enrollStatusChanged)
+  Q_PROPERTY(
+      VerifyStatus verifyStatus READ getVerifyStatus NOTIFY verifyStatusChanged)
+
  public:
   enum ErrorStatus {
     ERROR_NO_DEVICE,
@@ -24,6 +29,9 @@ class AppState : public QObject {
   Q_ENUM(ErrorStatus);
 
   enum EnrollStatus {
+    ENROLL_EMPTY,
+
+    ENROLL_START,
     ENROLL_COMPLETED,
     ENROLL_FAILED,
     ENROLL_STAGE_PASSED,
@@ -38,6 +46,9 @@ class AppState : public QObject {
   Q_ENUM(EnrollStatus)
 
   enum VerifyStatus {
+    VERIFY_EMPTY,
+
+    VERIFY_START,
     VERIFY_NO_MATCH,
     VERIFY_MATCH,
     VERIFY_RETRY_SCAN,
@@ -49,35 +60,44 @@ class AppState : public QObject {
   };
   Q_ENUM(VerifyStatus)
 
-  enum Finger {
-    FINGER_LEFT_THUMB,
-    FINGER_LEFT_INDEX,
-    FINGER_LEFT_MIDDLE,
-    FINGER_LEFT_RING,
-    FINGER_LEFT_LITTLE,
-    FINGER_RIGHT_THUMB,
-    FINGER_RIGHT_INDEX,
-    FINGER_RIGHT_MIDDLE,
-    FINGER_RIGHT_RING,
-    FINGER_RIGHT_LITTLE
-  };
-  Q_ENUM(Finger)
-
   AppState(QObject *parent = nullptr);
 
   void raiseError(QString rawError);
   void raiseError(AppState::ErrorStatus errorStatus);
 
+  EnrollStatus getEnrollStatus();
+  EnrollStatus enrollStatusFromRawString(QString rawStatus);
+  void setEnrollStatus(EnrollStatus status);
+
+  VerifyStatus getVerifyStatus();
+  VerifyStatus verifyStatusFromRawString(QString rawStatus);
+  void setVerifyStatus(VerifyStatus status);
+
+  void resetApp();
+
  public slots:
   QString errorStatusString(AppState::ErrorStatus status);
   QString enrollStatusString(AppState::EnrollStatus status);
   QString verifyStatusString(AppState::VerifyStatus status);
-  QString fingerString(AppState::Finger finger);
 
  signals:
-  void error(int errorStatus, QString errorString);
+  void enrollStatusChanged(EnrollStatus status);
+  void verifyStatusChanged(VerifyStatus status);
+
+  void enrollCompleted();
+  void enrollErrored();
+
+  void verifyCompleted();
+  void verifyErrored();
+
+  void error(ErrorStatus errorStatus, QString errorString);
+
+  void reset();
 
  private:
+  EnrollStatus _enrollStatus = EnrollStatus::ENROLL_EMPTY;
+  VerifyStatus _verifyStatus = VerifyStatus::VERIFY_EMPTY;
+
   QMap<QString, AppState::ErrorStatus> rawErrorMap = {
       {"net.reactivated.Fprint.Error.PermissionDenied",
        ErrorStatus::ERROR_PERMISSION_DENIED},
@@ -92,6 +112,34 @@ class AppState : public QObject {
        ErrorStatus::ERROR_NO_ACTION_IN_PROGRESS},
       {"net.reactivated.Fprint.Error.InvalidFingername",
        ErrorStatus::ERROR_INVALID_FINGERNAME}};
+
+  QMap<QString, AppState::EnrollStatus> rawEnrollStatusMap = {
+      {"enroll-completed", AppState::EnrollStatus::ENROLL_COMPLETED},
+      {"enroll-failed", AppState::EnrollStatus::ENROLL_FAILED},
+      {"enroll-stage-passed", AppState::EnrollStatus::ENROLL_STAGE_PASSED},
+      {"enroll-retry-scan", AppState::EnrollStatus::ENROLL_RETRY_SCAN},
+      {"enroll-swipe-too-short",
+       AppState::EnrollStatus::ENROLL_SWIPE_TOO_SHORT},
+      {"enroll-finger-not-centered",
+       AppState::EnrollStatus::ENROLL_FINGER_NOT_CENTERED},
+      {"enroll-remove-and-retry",
+       AppState::EnrollStatus::ENROLL_REMOVE_AND_RETRY},
+      {"enroll-data-full", AppState::EnrollStatus::ENROLL_DATA_FULL},
+      {"enroll-disconnected", AppState::EnrollStatus::ENROLL_DISCONNECTED},
+      {"enroll-unknown-error", AppState::EnrollStatus::ENROLL_UNKNOWN_ERROR}};
+
+  QMap<QString, AppState::VerifyStatus> rawVerifyStatusMap = {
+      {"verify-no-match", AppState::VerifyStatus::VERIFY_NO_MATCH},
+      {"verify-match", AppState::VerifyStatus::VERIFY_MATCH},
+      {"verify-retry-scan", AppState::VerifyStatus::VERIFY_RETRY_SCAN},
+      {"verify-swipe-too-short",
+       AppState::VerifyStatus::VERIFY_SWIPE_TOO_SHORT},
+      {"verify-finger-not-centered",
+       AppState::VerifyStatus::VERIFY_FINGER_NOT_CENTERED},
+      {"verify-remove-and-retry",
+       AppState::VerifyStatus::VERIFY_REMOVE_AND_RETRY},
+      {"verify-disconnected", AppState::VerifyStatus::VERIFY_DISCONNECTED},
+      {"verify-unknown-error", AppState::VerifyStatus::VERIFY_UNKNOWN_ERROR}};
 };
 
 #endif  // UTILS_APPSTATE_H

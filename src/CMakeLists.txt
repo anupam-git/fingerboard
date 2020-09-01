@@ -9,6 +9,7 @@ set(
 
   utils/logger.cpp
   utils/appstate.cpp
+  utils/finger.cpp
 )
 
 set(

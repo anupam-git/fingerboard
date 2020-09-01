@@ -11,6 +11,36 @@ void AppState::raiseError(AppState::ErrorStatus errorStatus) {
   emit error(errorStatus, errorStatusString(errorStatus));
 }
 
+AppState::EnrollStatus AppState::getEnrollStatus() { return _enrollStatus; }
+
+AppState::EnrollStatus AppState::enrollStatusFromRawString(QString rawStatus) {
+  return rawEnrollStatusMap[rawStatus];
+}
+
+void AppState::setEnrollStatus(AppState::EnrollStatus status) {
+  _enrollStatus = status;
+  emit enrollStatusChanged(status);
+}
+
+AppState::VerifyStatus AppState::getVerifyStatus() { return _verifyStatus; }
+
+AppState::VerifyStatus AppState::verifyStatusFromRawString(QString rawStatus) {
+  return rawVerifyStatusMap[rawStatus];
+}
+
+void AppState::setVerifyStatus(AppState::VerifyStatus status) {
+  _verifyStatus = status;
+  emit verifyStatusChanged(status);
+}
+
+void AppState::resetApp() {
+  _enrollStatus = EnrollStatus::ENROLL_EMPTY;
+  _verifyStatus = VerifyStatus::VERIFY_EMPTY;
+
+  emit enrollStatusChanged(_enrollStatus);
+  emit verifyStatusChanged(_verifyStatus);
+}
+
 QString AppState::errorStatusString(AppState::ErrorStatus status) {
   switch (status) {
     case AppState::ErrorStatus::ERROR_NO_DEVICE:
@@ -36,6 +66,10 @@ QString AppState::errorStatusString(AppState::ErrorStatus status) {
 
 QString AppState::enrollStatusString(AppState::EnrollStatus status) {
   switch (status) {
+    case AppState::EnrollStatus::ENROLL_EMPTY:
+      return "";
+    case AppState::EnrollStatus::ENROLL_START:
+      return "Touch/Swipe to start Enrolling";
     case AppState::EnrollStatus::ENROLL_FAILED:
       return "The enrollment failed";
     case AppState::EnrollStatus::ENROLL_COMPLETED:
@@ -63,6 +97,10 @@ QString AppState::enrollStatusString(AppState::EnrollStatus status) {
 
 QString AppState::verifyStatusString(AppState::VerifyStatus status) {
   switch (status) {
+    case AppState::VerifyStatus::VERIFY_EMPTY:
+      return "";
+    case AppState::VerifyStatus::VERIFY_START:
+      return "Touch/Swipe to start Verification";
     case AppState::VerifyStatus::VERIFY_MATCH:
       return "The verification succeeded";
     case AppState::VerifyStatus::VERIFY_NO_MATCH:
@@ -79,33 +117,6 @@ QString AppState::verifyStatusString(AppState::VerifyStatus status) {
       return "Remove the finger from the reader and retry scanning";
     case AppState::VerifyStatus::VERIFY_FINGER_NOT_CENTERED:
       return "Finger was not centered on the reader";
-  }
-
-  return "";
-}
-
-QString AppState::fingerString(AppState::Finger finger) {
-  switch (finger) {
-    case AppState::Finger::FINGER_LEFT_THUMB:
-      return "Left Thumb";
-    case AppState::Finger::FINGER_LEFT_INDEX:
-      return "Left Index Finger";
-    case AppState::Finger::FINGER_LEFT_MIDDLE:
-      return "Left Middle Finger";
-    case AppState::Finger::FINGER_LEFT_RING:
-      return "Left Ring Finger";
-    case AppState::Finger::FINGER_LEFT_LITTLE:
-      return "Left Little Finger";
-    case AppState::Finger::FINGER_RIGHT_THUMB:
-      return "Right Thumb";
-    case AppState::Finger::FINGER_RIGHT_INDEX:
-      return "Right Index Finger";
-    case AppState::Finger::FINGER_RIGHT_MIDDLE:
-      return "Right Middle Finger";
-    case AppState::Finger::FINGER_RIGHT_RING:
-      return "Right Ring Finger";
-    case AppState::Finger::FINGER_RIGHT_LITTLE:
-      return "Right Little Finger";
   }
 
   return "";
