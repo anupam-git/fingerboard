@@ -7,5 +7,6 @@
         <file>delete.svg</file>
         <file>back.svg</file>
         <file>info.svg</file>
+        <file>menu.svg</file>
     </qresource>
 </RCC>

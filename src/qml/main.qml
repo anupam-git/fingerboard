@@ -7,7 +7,7 @@ import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
 
-Controls1.ApplicationWindow {
+ApplicationWindow {
     property bool showLogs: false
     property int selectedEnrollingFinger: -1
 
@@ -16,33 +16,13 @@ Controls1.ApplicationWindow {
     minimumHeight: 800
     title: "Fingerboard"
     visible: true
-    menuBar: Controls1.MenuBar {
-        Controls1.Menu {
-            title: "&File"
 
-            Controls1.MenuItem {
-                text: "&Exit"
-            }
-        }
-        Controls1.Menu {
-            title: "&Tools"
+    Material.theme: Material.Light
+    Material.accent: Material.Blue
 
-            Controls1.MenuItem {
-                text: "Show logs"
-                checkable: true
-                checked: showLogs
-                shortcut: "Ctrl+L"
-                onTriggered: {
-                    showLogs = !showLogs;
-                }
-            }
-        }
-    }
     Component.onCompleted: {
         FingerboardCppInterface.init();
     }
-    Material.theme: Material.Light
-    Material.accent: Material.Blue    
 
     Connections {
         target: AppState
@@ -53,14 +33,64 @@ Controls1.ApplicationWindow {
         }
     }
 
+    Menu {
+        id: appMenu
+
+        font.pixelSize: 12
+
+        MenuItem {
+            text: "Show Logs"
+            checkable: true
+            checked: showLogs
+
+            Shortcut {
+                sequence: "ctrl+l"
+                onActivated: showLogs = !showLogs
+            }
+
+            onToggled: showLogs = !showLogs
+        }
+
+        MenuItem {
+            text: "About"
+            onTriggered: aboutDialog.open();
+        }
+
+        MenuItem {
+            text: "Exit"
+            onTriggered: Qt.quit();
+        }
+    }
+
+    RoundButton {
+        id: menuBtn
+
+        width: 48
+        height: 48
+        flat: true
+        icon.source: "qrc:/menu.svg"
+        icon.color: Material.color(Material.Grey, Material.Shade700)
+        icon.width: 18
+        icon.height: 18
+        hoverEnabled: true
+
+        onClicked: {
+            appMenu.popup(menuBtn.x + 5, menuBtn.y + menuBtn.height);
+        }
+
+        PointingHandOverlay {
+            anchors.fill: parent
+        }
+    }
+
     Image {
         width: 24
         height: 24
         source: "qrc:/info.svg"
         anchors {
             right: parent.right
-            top: parent.top
-            margins: 24
+            top: menuBtn.top
+            margins: 12
         }
 
         ColorOverlay {
@@ -197,6 +227,9 @@ Controls1.ApplicationWindow {
 
     DeleteDialog {
         id: deleteDialog
+    }
+    AboutDialog {
+        id: aboutDialog
     }
 }
 

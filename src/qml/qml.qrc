@@ -10,5 +10,6 @@
         <file>CircularProgressBar.qml</file>
         <file>VerifyView.qml</file>
         <file>ErrorDialog.qml</file>
+        <file>AboutDialog.qml</file>
     </qresource>
 </RCC>
