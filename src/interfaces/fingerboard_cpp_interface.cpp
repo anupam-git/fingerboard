@@ -46,6 +46,7 @@ void FingerboardCppInterface::init() {
             SLOT(verifyStatusSlot(QString, bool)));
 
     deviceInfo();
+    listFp();
   } else {
     logger->log(Logger::ERROR, appState->errorStatusString(
                                    AppState::ErrorStatus::ERROR_NO_DEVICE));
@@ -107,7 +108,7 @@ void FingerboardCppInterface::listFp() {
       appState->raiseError(listEnrolledFingersReply.error().name());
     } else {
       QStringList rawEnrolledFingersList = listEnrolledFingersReply.value();
-      QList<Finger::Fingerprint> enrolledFingers;
+      QList<int> enrolledFingers;
       Finger fingerObj;
 
       logger->log(Logger::DEBUG, "ENROLLED FINGERPRINTS");

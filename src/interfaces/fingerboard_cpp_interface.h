@@ -28,7 +28,7 @@ class FingerboardCppInterface : public QObject {
   void deleteFp();
 
  signals:
-  void enrolledFingerprintsList(QList<Finger::Fingerprint> fingerprints);
+  void enrolledFingerprintsList(QList<int> fingerprints);
   void log(int logLevel, QString msg);
 
  private:

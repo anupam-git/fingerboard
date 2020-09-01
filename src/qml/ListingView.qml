@@ -11,6 +11,28 @@ Rectangle {
 
     width: 600
 
+    Connections {
+        target: FingerboardCppInterface
+
+        function onEnrolledFingerprintsList(fingerprints) {
+            var enrolledFingersMap = {};
+
+            for (var enrolledFinger in fingerprints) {
+                enrolledFingersMap[fingerprints[enrolledFinger]] = true;
+            }
+
+            console.log(JSON.stringify(enrolledFingersMap));
+
+            for (var i=0; i<leftHandFingers.count; i++) {
+                leftHandFingers.setProperty(i, "enrolled", enrolledFingersMap[leftHandFingers.get(i).finger] || false);
+            }
+
+            for (var j=0; j<rightHandFingers.count; j++) {
+                rightHandFingers.setProperty(j, "enrolled", enrolledFingersMap[rightHandFingers.get(j).finger] || false);
+            }
+        }
+    }
+
     ListModel {
         id: leftHandFingers
 
@@ -22,7 +44,7 @@ Rectangle {
         ListElement {
             text: "Left Index Finger"
             finger: Finger.LEFT_INDEX
-            enrolled: true
+            enrolled: false
         }
         ListElement {
             text: "Left Middle Finger"
@@ -46,7 +68,7 @@ Rectangle {
         ListElement {
             text: "Right Thumb"
             finger: Finger.RIGHT_THUMB
-            enrolled: true
+            enrolled: false
         }
         ListElement {
             text: "Right Index Finger"
@@ -56,7 +78,7 @@ Rectangle {
         ListElement {
             text: "Right Middle Finger"
             finger: Finger.RIGHT_MIDDLE
-            enrolled: true
+            enrolled: false
         }
         ListElement {
             text: "Right Ring Finger"
