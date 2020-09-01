@@ -8,6 +8,7 @@ import Fingerboard 1.0
 
 Controls1.ApplicationWindow {
     property bool showLogs: false
+    property int selectedEnrollingFinger: -1
 
     id: appWindow
     minimumWidth: 1000
@@ -40,7 +41,7 @@ Controls1.ApplicationWindow {
         FingerboardCppInterface.init();
     }
     Material.theme: Material.Light
-    Material.accent: Material.Blue
+    Material.accent: Material.Blue    
 
     Connections {
         target: AppState
@@ -63,10 +64,8 @@ Controls1.ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             Layout.topMargin: 32
-            initialItem: listView
-//            initialItem: enrollView
+            initialItem: initialView
 
-            // @disable-check M16
             pushEnter: Transition {
                 PropertyAnimation {
                     property: "x"
@@ -76,7 +75,6 @@ Controls1.ApplicationWindow {
                     duration: appstack.animationDuration
                 }
             }
-            // @disable-check M16
             pushExit: Transition {
                 PropertyAnimation {
                     property: "x"
@@ -86,7 +84,6 @@ Controls1.ApplicationWindow {
                     duration: appstack.animationDuration
                 }
             }
-            // @disable-check M16
             popEnter: Transition {
                 PropertyAnimation {
                     property: "x"
@@ -96,7 +93,6 @@ Controls1.ApplicationWindow {
                     duration: appstack.animationDuration
                 }
             }
-            // @disable-check M16
             popExit: Transition {
                 PropertyAnimation {
                     property: "x"
@@ -117,7 +113,7 @@ Controls1.ApplicationWindow {
     }
 
     Component {
-        id: listView
+        id: initialView
 
         Item {
             ListingView {

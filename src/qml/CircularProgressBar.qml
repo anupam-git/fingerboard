@@ -233,6 +233,7 @@ Item {
         Behavior on degree {
             NumberAnimation {
                 duration: root.animationDuration
+                easing: Easing.OutCubic
             }
         }
     }

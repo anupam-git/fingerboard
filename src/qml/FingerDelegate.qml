@@ -32,9 +32,8 @@ Rectangle {
         }
 
         RoundButton {
-            visible: !model.enrolled
             flat: true
-            icon.source: "qrc:/add.svg"
+            icon.source: model.enrolled ? "qrc:/edit.svg" : "qrc:/add.svg"
             icon.color: Material.color(Material.Grey)
             icon.width: 18
             icon.height: 18
@@ -42,6 +41,7 @@ Rectangle {
             hoverEnabled: true
 
             onClicked: {
+                selectedEnrollingFinger = model.finger;
                 appstack.push(enrollView);
             }
 
@@ -49,23 +49,6 @@ Rectangle {
                 anchors.fill: parent
             }
 
-        }
-        RoundButton {
-            visible: model.enrolled
-            flat: true
-            icon.source: "qrc:/edit.svg"
-            icon.color: Material.color(Material.Grey)
-            icon.width: 18
-            icon.height: 18
-            hoverEnabled: true
-
-            onClicked: {
-                appstack.push(enrollView);
-            }
-
-            PointingHandOverlay {
-                anchors.fill: parent
-            }
         }
     }
 }

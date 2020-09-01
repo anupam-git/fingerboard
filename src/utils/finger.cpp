@@ -32,3 +32,19 @@ QString Finger::name(Finger::Fingerprint finger) {
 Finger::Fingerprint Finger::fromName(QString rawFingerName) {
   return rawFingersMap[rawFingerName];
 }
+
+QString Finger::rawFingerName(int fingerprint) {
+  QMapIterator<QString, Fingerprint> it(rawFingersMap);
+  QString val = "";
+
+  while (it.hasNext()) {
+    it.next();
+
+    if (fingerprint == it.value()) {
+      val = it.key();
+      break;
+    }
+  }
+
+  return val;
+}

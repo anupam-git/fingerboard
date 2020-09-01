@@ -11,8 +11,13 @@ class AppState : public QObject {
 
   Q_PROPERTY(
       EnrollStatus enrollStatus READ getEnrollStatus NOTIFY enrollStatusChanged)
+  Q_PROPERTY(QString enrollStatusString READ getEnrollStatusString NOTIFY
+                 enrollStatusChanged)
+
   Q_PROPERTY(
       VerifyStatus verifyStatus READ getVerifyStatus NOTIFY verifyStatusChanged)
+  Q_PROPERTY(QString verifyStatusString READ getVerifyStatusString NOTIFY
+                 verifyStatusChanged)
 
  public:
   enum ErrorStatus {
@@ -62,14 +67,17 @@ class AppState : public QObject {
 
   AppState(QObject *parent = nullptr);
 
+  ErrorStatus errorStatusFromRawString(QString rawErrorString);
   void raiseError(QString rawError);
   void raiseError(AppState::ErrorStatus errorStatus);
 
   EnrollStatus getEnrollStatus();
+  QString getEnrollStatusString();
   EnrollStatus enrollStatusFromRawString(QString rawStatus);
   void setEnrollStatus(EnrollStatus status);
 
   VerifyStatus getVerifyStatus();
+  QString getVerifyStatusString();
   VerifyStatus verifyStatusFromRawString(QString rawStatus);
   void setVerifyStatus(VerifyStatus status);
 
@@ -77,18 +85,19 @@ class AppState : public QObject {
 
  public slots:
   QString errorStatusString(AppState::ErrorStatus status);
-  QString enrollStatusString(AppState::EnrollStatus status);
-  QString verifyStatusString(AppState::VerifyStatus status);
 
  signals:
-  void enrollStatusChanged(EnrollStatus status);
-  void verifyStatusChanged(VerifyStatus status);
+  void listingCompleted();
 
+  void enrollStatusChanged(EnrollStatus status);
   void enrollCompleted();
   void enrollErrored();
 
+  void verifyStatusChanged(VerifyStatus status);
   void verifyCompleted();
   void verifyErrored();
+
+  void deleteCompleted();
 
   void error(ErrorStatus errorStatus, QString errorString);
 

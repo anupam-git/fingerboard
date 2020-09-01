@@ -7,8 +7,30 @@ import QtGraphicalEffects 1.0
 import Fingerboard 1.0
 
 Rectangle {
+    property int stageCounter: 0
+    property bool enrollStarted: false
+    property bool enrollCompleted: false
+    property bool enrollErrored: false
+
     width: 600
     height: 700
+
+    Connections {
+        target: AppState
+
+        function onEnrollStatusChanged(status) {
+            switch (status) {
+                case AppState.ENROLL_STAGE_PASSED:
+                    stageCounter++;
+                    break;
+            }
+        }
+
+        function onEnrollCompleted() {
+            enrollCompleted = true;
+            FingerboardCppInterface.listFp();
+        }
+    }
 
     ColumnLayout {
         width: parent.width
@@ -21,10 +43,21 @@ Rectangle {
 
             CircularProgressBar {
                 lineWidth: 6
-                value: 0.6
+                value: enrollCompleted ? 1 : stageCounter/FingerboardCppInterface.numEnrollStages
                 size: parent.width
-                secondaryColor: "#e0e0e0"
-                primaryColor: Material.color(Material.Blue)
+                animationDuration: 200
+                secondaryColor: Material.color(Material.Grey, Material.Shade300)
+                primaryColor: getColor()
+
+                function getColor() {
+                    if (enrollCompleted) {
+                        return Material.color(Material.Green)
+                    } else if (enrollErrored) {
+                        return Material.color(Material.Red)
+                    } else {
+                        return Material.color(Material.Blue)
+                    }
+                }
             }
 
             Image {
@@ -37,13 +70,23 @@ Rectangle {
                 ColorOverlay {
                     anchors.fill: parent
                     source: parent
-                    color: Material.color(Material.Grey, Material.Shade700)
+                    color: getColor()
+
+                    function getColor() {
+                        if (enrollCompleted) {
+                            return Material.color(Material.Green)
+                        } else if (enrollErrored) {
+                            return Material.color(Material.Red)
+                        } else {
+                            return Material.color(Material.Grey, Material.Shade600)
+                        }
+                    }
                 }
             }
         }
 
         Label {
-            text: "Right Index"
+            text: Finger.name(selectedEnrollingFinger)
             font.pixelSize: 12
             font.bold: true
             Layout.alignment: Qt.AlignHCenter
@@ -52,24 +95,34 @@ Rectangle {
         }
 
         Label {
-            text: "Stage 3/5"
+            visible: enrollStarted && !enrollCompleted
+            text: `Stage ${stageCounter+1}\/${FingerboardCppInterface.numEnrollStages}`
             font.pixelSize: 30
-            font.bold: true
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 32
-            color: Material.color(Material.Grey, Material.Shade700)
+            color: Material.color(Material.Blue, Material.Shade600)
         }
 
         Label {
-            visible: true
-            text: "Touch/Swipe your finger to continue Enrolling"
+            visible: enrollCompleted
+            text: `Completed`
+            font.pixelSize: 30
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: 32
+            color: Material.color(Material.Green)
+        }
+
+        Label {
+            visible: enrollStarted
+            text: AppState.enrollStatusString
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 128
-            font.pixelSize: 12
+            font.pixelSize: 15
             color: Material.color(Material.Grey, Material.Shade500)
         }
 
-        Button {visible: false
+        Button {
+            visible: !enrollStarted
             Layout.preferredWidth: 128
             Layout.preferredHeight: 45
             text: "<font color='white'>START</font>"
@@ -77,13 +130,14 @@ Rectangle {
             font.bold: true
             hoverEnabled: true
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 128
+            Layout.topMargin: 185
 
             Material.elevation: 0
             Material.background: Material.Blue
 
             onClicked: {
-                console.log("Start Enrolling");
+                enrollStarted = true;
+                FingerboardCppInterface.enrollFp(selectedEnrollingFinger);
             }
 
             PointingHandOverlay {

@@ -24,8 +24,10 @@ class Finger : public QObject {
 
   Finger(QObject *parent = nullptr);
 
+ public slots:
   QString name(Fingerprint finger);
   Fingerprint fromName(QString rawFingerName);
+  QString rawFingerName(int fingerprint);
 
  private:
   QMap<QString, Fingerprint> rawFingersMap = {

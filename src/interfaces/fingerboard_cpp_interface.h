@@ -7,6 +7,7 @@
 #include "fprintddeviceinterface.h"
 #include "fprintdmanagerinterface.h"
 #include "utils/appstate.h"
+#include "utils/deviceinfo.h"
 #include "utils/finger.h"
 #include "utils/logger.h"
 
@@ -15,21 +16,34 @@
 class FingerboardCppInterface : public QObject {
   Q_OBJECT
 
+  Q_PROPERTY(QString deviceName READ getDeviceName NOTIFY deviceNameChanged)
+  Q_PROPERTY(QString scanType READ getScanType NOTIFY scanTypeChanged)
+  Q_PROPERTY(
+      int numEnrollStages READ getNumEnrollStages NOTIFY numEnrollStagesChanged)
+
  public:
-  FingerboardCppInterface(AppState *appState, Logger *logger,
+  FingerboardCppInterface(Finger *fingerObj, Logger *logger, AppState *appState,
                           QObject *parent = nullptr);
+
+  QString getDeviceName();
+  QString getScanType();
+  int getNumEnrollStages();
 
  public slots:
   void init();
   void deviceInfo();
   void listFp();
-  void enrollFp(QString finger);
+  void enrollFp(int finger);
   void verifyFp(QString finger = "any");
   void deleteFp();
 
  signals:
   void enrolledFingerprintsList(QList<int> fingerprints);
   void log(int logLevel, QString msg);
+
+  void deviceNameChanged(QString deviceName);
+  void scanTypeChanged(QString scanType);
+  void numEnrollStagesChanged(int numEnrollStages);
 
  private:
   net::reactivated::Fprint::Device *fprintdInterfaceDevice;
@@ -39,6 +53,11 @@ class FingerboardCppInterface : public QObject {
   QString defaultDevicePath;
   AppState *appState;
   Logger *logger;
+  Finger *fingerObj;
+
+  QString _deviceName;
+  QString _scanType;
+  int _numEnrollStages;
 
   bool claimFpDevice();
   void releaseFpDevice();

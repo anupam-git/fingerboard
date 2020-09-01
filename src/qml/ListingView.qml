@@ -21,9 +21,8 @@ Rectangle {
                 enrolledFingersMap[fingerprints[enrolledFinger]] = true;
             }
 
-            console.log(JSON.stringify(enrolledFingersMap));
-
             for (var i=0; i<leftHandFingers.count; i++) {
+                console.log(enrolledFingersMap[leftHandFingers.get(i).finger] || false);
                 leftHandFingers.setProperty(i, "enrolled", enrolledFingersMap[leftHandFingers.get(i).finger] || false);
             }
 

@@ -2,9 +2,13 @@
 
 AppState::AppState(QObject *parent) : QObject(parent) {}
 
+AppState::ErrorStatus AppState::errorStatusFromRawString(
+    QString rawErrorString) {
+  return rawErrorMap[rawErrorString];
+}
+
 void AppState::raiseError(QString rawError) {
-  ErrorStatus errorStatus = rawErrorMap[rawError];
-  emit error(errorStatus, errorStatusString(errorStatus));
+  raiseError(rawErrorMap[rawError]);
 }
 
 void AppState::raiseError(AppState::ErrorStatus errorStatus) {
@@ -64,8 +68,8 @@ QString AppState::errorStatusString(AppState::ErrorStatus status) {
   return "";
 }
 
-QString AppState::enrollStatusString(AppState::EnrollStatus status) {
-  switch (status) {
+QString AppState::getEnrollStatusString() {
+  switch (_enrollStatus) {
     case AppState::EnrollStatus::ENROLL_EMPTY:
       return "";
     case AppState::EnrollStatus::ENROLL_START:
@@ -95,8 +99,8 @@ QString AppState::enrollStatusString(AppState::EnrollStatus status) {
   return "";
 }
 
-QString AppState::verifyStatusString(AppState::VerifyStatus status) {
-  switch (status) {
+QString AppState::getVerifyStatusString() {
+  switch (_verifyStatus) {
     case AppState::VerifyStatus::VERIFY_EMPTY:
       return "";
     case AppState::VerifyStatus::VERIFY_START:

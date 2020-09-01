@@ -3,6 +3,8 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Material 2.15
 
+import Fingerboard 1.0
+
 Dialog {
     modal: true
     implicitWidth: 400
@@ -42,7 +44,10 @@ Dialog {
         }
     }
 
-    onAccepted: console.log("Delete All Fingerprints");
+    onAccepted: {
+        FingerboardCppInterface.deleteFp();
+        FingerboardCppInterface.listFp();
+    }
 
     ColumnLayout {
         Label {
