@@ -1,7 +1,6 @@
 #include "logger.h"
 
 #include <QDateTime>
-#include <QDebug>
 #include <QStandardPaths>
 #include <QUrl>
 

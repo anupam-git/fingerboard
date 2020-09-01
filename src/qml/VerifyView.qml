@@ -80,15 +80,6 @@ Rectangle {
         }
 
         Label {
-            text: "" // Finger.name(selectedEnrollingFinger)
-            font.pixelSize: 12
-            font.bold: true
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 16
-            color: Material.color(Material.Grey)
-        }
-
-        Label {
             text: getText()
             font.pixelSize: 30
             Layout.alignment: Qt.AlignHCenter
@@ -102,6 +93,8 @@ Rectangle {
                     return "No Match";
                 } else if (verifyStarted && verifyCompleted) {
                     return "Matched";
+                } else {
+                    return "";
                 }
             }
 

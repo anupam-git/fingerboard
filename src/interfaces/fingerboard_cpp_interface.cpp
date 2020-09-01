@@ -1,7 +1,6 @@
 #include "fingerboard_cpp_interface.h"
 
 #include <QDataStream>
-#include <QDebug>
 #include <QString>
 
 FingerboardCppInterface::FingerboardCppInterface(Finger *fingerObj,
@@ -153,8 +152,6 @@ bool FingerboardCppInterface::enrollFp(int finger) {
         fprintdInterfaceDevice->EnrollStart(fingerObj->rawFingerName(finger));
     enrollStartReply.waitForFinished();
 
-    qDebug() << "Enroll Start Reply :" << enrollStartReply.reply();
-
     if (enrollStartReply.error().isValid()) {
       logger->log(Logger::ERROR, QString("%1 : %2")
                                      .arg(enrollStartReply.error().name())
@@ -183,8 +180,6 @@ bool FingerboardCppInterface::verifyFp(QString finger) {
     QDBusPendingReply verifyStartReply =
         fprintdInterfaceDevice->VerifyStart(finger);
     verifyStartReply.waitForFinished();
-
-    qDebug() << "Verify Start Reply :" << verifyStartReply.reply();
 
     if (verifyStartReply.error().isValid()) {
       logger->log(Logger::ERROR, QString("%1 : %2")
@@ -297,8 +292,6 @@ bool FingerboardCppInterface::claimFpDevice() {
     return false;
   }
 
-  qDebug() << "Claim Response :" << claimReply.reply();
-
   return true;
 }
 
@@ -314,6 +307,4 @@ void FingerboardCppInterface::releaseFpDevice() {
 
     appState->raiseError(releaseReply.error().name());
   }
-
-  qDebug() << "Release Response :" << releaseReply.reply();
 }

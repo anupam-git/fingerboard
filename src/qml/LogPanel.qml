@@ -77,6 +77,7 @@ Rectangle {
                     }
                     textRole: "text"
                     delegate: ItemDelegate {
+                        width: parent.width
                         text: model.text
                         font.pixelSize: 12
                     }
