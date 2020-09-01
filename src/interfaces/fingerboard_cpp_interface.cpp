@@ -108,11 +108,12 @@ void FingerboardCppInterface::listFp() {
     } else {
       QStringList rawEnrolledFingersList = listEnrolledFingersReply.value();
       QList<Finger::Fingerprint> enrolledFingers;
+      Finger fingerObj;
 
       logger->log(Logger::DEBUG, "ENROLLED FINGERPRINTS");
       for (QString finger : rawEnrolledFingersList) {
         logger->log(Logger::DEBUG, QString("  - %1").arg(finger));
-        enrolledFingers.append(Finger::fromName(finger));
+        enrolledFingers.append(fingerObj.fromName(finger));
       }
 
       emit enrolledFingerprintsList(enrolledFingers);

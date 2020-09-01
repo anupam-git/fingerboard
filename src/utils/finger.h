@@ -25,10 +25,10 @@ class Finger : public QObject {
   Finger(QObject *parent = nullptr);
 
   QString name(Fingerprint finger);
-  static Fingerprint fromName(QString rawFingerName);
+  Fingerprint fromName(QString rawFingerName);
 
  private:
-  static QMap<QString, Fingerprint> rawFingersMap = {
+  QMap<QString, Fingerprint> rawFingersMap = {
       {"left-thumb", Fingerprint::LEFT_THUMB},
       {"left-index-finger", Fingerprint::LEFT_INDEX},
       {"left-middle-finger", Fingerprint::LEFT_MIDDLE},
