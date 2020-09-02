@@ -20,6 +20,8 @@ ApplicationWindow {
     Material.theme: Material.Light
     Material.accent: Material.Blue
 
+    Material.background: "#f5f5f5"
+
     Component.onCompleted: {
         FingerboardCppInterface.init();
     }

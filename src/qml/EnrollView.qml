@@ -18,6 +18,10 @@ Rectangle {
     Connections {
         target: AppState
 
+        function onEnrollStarted() {
+            enrollStarted = true;
+        }
+
         function onEnrollStatusChanged(status) {
             switch (status) {
                 case AppState.ENROLL_STAGE_PASSED:
@@ -136,9 +140,7 @@ Rectangle {
             Material.background: Material.Blue
 
             onClicked: {
-                if (FingerboardCppInterface.enrollFp(selectedEnrollingFinger)) {
-                    enrollStarted = true;
-                }
+                FingerboardCppInterface.enrollFp(selectedEnrollingFinger);
             }
 
             PointingHandOverlay {

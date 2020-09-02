@@ -33,8 +33,8 @@ class FingerboardCppInterface : public QObject {
   void init();
   void deviceInfo();
   void listFp();
-  bool enrollFp(int finger);
-  bool verifyFp(QString finger = "any");
+  void enrollFp(int finger);
+  void verifyFp(QString finger = "any");
   void deleteFp();
 
  signals:

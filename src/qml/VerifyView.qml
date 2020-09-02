@@ -17,6 +17,10 @@ Rectangle {
     Connections {
         target: AppState
 
+        function onVerifyStarted() {
+            verifyStarted= true;
+        }
+
         function onVerifyCompleted() {
             verifyCompleted = true;
         }
@@ -133,9 +137,7 @@ Rectangle {
             Material.background: Material.Blue
 
             onClicked: {
-                if (FingerboardCppInterface.verifyFp()) {
-                    verifyStarted = true;
-                }
+                FingerboardCppInterface.verifyFp();
             }
 
             PointingHandOverlay {

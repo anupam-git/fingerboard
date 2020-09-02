@@ -26,7 +26,6 @@ Dialog {
                 anchors.fill: parent
             }
         }
-
     }
 
     ColumnLayout {

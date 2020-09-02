@@ -46,7 +46,14 @@ Dialog {
 
     onAccepted: {
         FingerboardCppInterface.deleteFp();
-        FingerboardCppInterface.listFp();
+    }
+
+    Connections {
+        target: AppState
+
+        function onDeleteCompleted() {
+            FingerboardCppInterface.listFp();
+        }
     }
 
     ColumnLayout {

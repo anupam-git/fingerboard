@@ -87,16 +87,20 @@ class AppState : public QObject {
   QString errorStatusString(AppState::ErrorStatus status);
 
  signals:
+  void listingStarted();
   void listingCompleted();
 
+  void enrollStarted();
   void enrollStatusChanged(EnrollStatus status);
   void enrollCompleted();
   void enrollErrored();
 
+  void veriyStarted();
   void verifyStatusChanged(VerifyStatus status);
   void verifyCompleted();
   void verifyErrored();
 
+  void deleteStarted();
   void deleteCompleted();
 
   void error(ErrorStatus errorStatus, QString errorString);
