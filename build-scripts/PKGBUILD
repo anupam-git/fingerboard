@@ -2,7 +2,7 @@ pkgname=fingerboard
 pkgdesc='A fprintd based GUI for listing, enrolling, deleting and verifying fingerprints for Linux'
 
 # Extract package version from CMakeLists.txt
-pkgver=$(cat ${startdir}/CMakeLists.txt | grep -Po '(?<=FINGERBOARD_VERSION )\d*.\d*.\d*')
+pkgver=$(cat ${startdir}/../CMakeLists.txt | grep -Po '(?<=FINGERBOARD_VERSION )\d*.\d*.\d*')
 pkgrel=1
 
 arch=(x86_64)
@@ -17,15 +17,15 @@ conflicts=(fingerboard)
 sha256sums=('SKIP')
 
 build() {
-  mkdir -p "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
+  mkdir -p "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
 
-  cd "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
+  cd "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
   cp -r \
-    "${startdir}"/src \
-    "${startdir}"/CMakeLists.txt \
-    "${startdir}"/*.cmake \
-    "${startdir}"/*.rst \
-    "${startdir}"/LICENSE \
+    "${startdir}/.."/src \
+    "${startdir}/.."/CMakeLists.txt \
+    "${startdir}/.."/cmake \
+    "${startdir}/.."/*.rst \
+    "${startdir}/.."/LICENSE \
     ./
   
   cmake \
@@ -38,9 +38,9 @@ build() {
  
 package() {
   (
-    cd "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
+    cd "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
     make -j$(nproc) DESTDIR="$pkgdir" install
   )
 
-  echo "rm ${startdir}/pkgbuild-${pkgname}-${pkgver}"
+  echo "rm ${startdir}/../pkgbuild-${pkgname}-${pkgver}"
 }
