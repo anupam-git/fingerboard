@@ -1,20 +1,32 @@
 pkgname=fingerboard
-pkgver=0.1.0
+pkgdesc='A fprintd based GUI for listing, enrolling, deleting and verifying fingerprints for Linux'
+
+# Extract package version from CMakeLists.txt
+pkgver=$(cat ${startdir}/CMakeLists.txt | grep -Po '(?<=FINGERBOARD_VERSION )\d*.\d*.\d*')
 pkgrel=1
-pkgdesc=''
+
 arch=(x86_64)
-url=""
-depends=(qt5-base qt5-declarative qt5-quickcontrols qt5-quickcontrols2)
+license=('MIT')
+url="https://github.com/anupam-git/fingerboard"
+
+depends=(qt5-base qt5-declarative qt5-quickcontrols qt5-quickcontrols2 qt5-graphicaleffects qt5-svg)
 makedepends=(git cmake extra-cmake-modules)
 provides=(fingerboard)
 conflicts=(fingerboard)
+
 sha256sums=('SKIP')
 
 build() {
-  mkdir -p "${startdir}/pkgbuild-${pkgname}-${pkgver}"
+  mkdir -p "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
 
-  cd "${startdir}/pkgbuild-${pkgname}-${pkgver}"
-  cp -r "${startdir}/src" "${startdir}/CMakeLists.txt" ./
+  cd "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
+  cp -r \
+    "${startdir}"/src \
+    "${startdir}"/CMakeLists.txt \
+    "${startdir}"/*.cmake \
+    "${startdir}"/*.rst \
+    "${startdir}"/LICENSE \
+    ./
   
   cmake \
     -DCMAKE_BUILD_TYPE=Release \
@@ -26,7 +38,7 @@ build() {
  
 package() {
   (
-    cd "${startdir}/pkgbuild-${pkgname}-${pkgver}"
+    cd "${startdir}/build/pkgbuild-${pkgname}-${pkgver}"
     make -j$(nproc) DESTDIR="$pkgdir" install
   )
 
