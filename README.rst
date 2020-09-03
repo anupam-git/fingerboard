@@ -4,8 +4,8 @@ Fingerboard
 
     | A fprintd_ based fingerprint GUI for Linux
 
-Fingerboard is a fingerprint GUI to enroll/list/delete fingerprints.
-Fingerboard is an GUI interface to fprint, and used the D-Bus interfaces to communicate with fprint.
+Fingerboard is a fingerprint GUI to enroll, list, delete and verify fingerprints.
+Fingerboard is an GUI interface to fprint, and uses the D-Bus interfaces to communicate with fprint.
 
 Building
 --------
