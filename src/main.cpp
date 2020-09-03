@@ -1,7 +1,9 @@
 #include <QGuiApplication>
+#include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
 
+#include "../fingerboard_version.h"
 #include "interfaces/fingerboard_cpp_interface.h"
 #include "utils/appstate.h"
 #include "utils/finger.h"
@@ -31,6 +33,11 @@ int main(int argc, char *argv[]) {
   QGuiApplication app(argc, argv);
   QQmlApplicationEngine engine;
   const QUrl url(QStringLiteral("qrc:/main.qml"));
+
+  app.setApplicationName("fingerboard");
+  app.setApplicationDisplayName("Fingerboard");
+  app.setApplicationVersion(FINGERBOARD_VERSION_STRING);
+  app.setWindowIcon(QIcon(":/sc-apps-fingerboard.svg"));
 
   registerQmlTypes(&app);
 

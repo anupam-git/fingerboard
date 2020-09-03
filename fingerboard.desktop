@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Fingerboard
+Comment=Fingerprint GUI
+TryExec=fingerboard
+Exec=fingerboard %U
+Terminal=false
+Type=Application
+Categories=Qt;System;Utility;Settings;
+StartupNotify=true
+Icon=fingerboard
+# Generic name with translations
+GenericName=Fingerprint GUI

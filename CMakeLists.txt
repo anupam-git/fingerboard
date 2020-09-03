@@ -25,6 +25,10 @@ find_package(
 )
 
 include(ECMSetupVersion)
+include(ECMInstallIcons)
+include(ECMAddAppIcon)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
 include(FeatureSummary)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -36,6 +40,12 @@ ecm_setup_version(
   VARIABLE_PREFIX   FINGERBOARD
   VERSION_HEADER    "${CMAKE_CURRENT_BINARY_DIR}/fingerboard_version.h"
 )
+ecm_install_icons(
+    ICONS src/assets/sc-apps-fingerboard.svg
+    DESTINATION share/icons
+)
+install(FILES fingerboard.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+
 
 add_subdirectory(src)
 

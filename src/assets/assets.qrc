@@ -8,5 +8,6 @@
         <file>back.svg</file>
         <file>info.svg</file>
         <file>menu.svg</file>
+        <file>sc-apps-fingerboard.svg</file>
     </qresource>
 </RCC>
