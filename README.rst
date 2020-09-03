@@ -27,9 +27,9 @@ The project uses CMake to build the project. Follow the steps below to build and
 
 Hacking
 -------
-#. Read the instructions in HACKING.rst_ guide before commiting
-#. It is recommended to create an issue and discuss before making any Pull Requests otherwise the Pull Request
-   may not be merged
+#. Any kind of contribution is appreciated
+#. Format the cpp sources and headers with `clang-format -i -style=file <cpp source or header>`
+#. Properly indent qml source
 
 .. References
 .. ----------
