@@ -22,6 +22,7 @@ build() {
   cd "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
   cp -r \
     "${startdir}/.."/src \
+    "${startdir}/.."/fingerboard.desktop \
     "${startdir}/.."/CMakeLists.txt \
     "${startdir}/.."/cmake \
     "${startdir}/.."/*.rst \
