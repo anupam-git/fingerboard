@@ -67,8 +67,14 @@ CMakeLists.txt.user*
 # Bazaar files
 .bzr
 
+# PKGBUILD BUILD FILES
+pkg/
+pkgbuild-fingerboard-*/
+fingerboard-*.pkg.tar.xz
+
 # OTHERS
 build/
+build-scripts/src
 *.kdev4
 *.directory
 *.*~
@@ -80,3 +86,7 @@ build/
 ~*.*
 ~.*
 .vscode
+
+# Exceptions
+!build-scripts/
+!build-scripts/build*.sh

@@ -1,0 +1,47 @@
+pkgname=fingerboard
+pkgdesc='A fprintd based GUI for listing, enrolling, deleting and verifying fingerprints for Linux'
+
+# Extract package version from CMakeLists.txt
+pkgver=$(cat ${startdir}/../CMakeLists.txt | grep -Po '(?<=FINGERBOARD_VERSION )\d*.\d*.\d*')
+pkgrel=1
+
+arch=(x86_64)
+license=('MIT')
+url="https://github.com/anupam-git/fingerboard"
+
+depends=(qt5-base qt5-declarative qt5-quickcontrols qt5-quickcontrols2 qt5-graphicaleffects qt5-svg)
+makedepends=(git cmake extra-cmake-modules)
+provides=(fingerboard)
+conflicts=(fingerboard)
+
+sha256sums=('SKIP')
+
+build() {
+  mkdir -p "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
+
+  cd "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
+  cp -r \
+    "${startdir}/.."/src \
+    "${startdir}/.."/fingerboard.desktop \
+    "${startdir}/.."/CMakeLists.txt \
+    "${startdir}/.."/cmake \
+    "${startdir}/.."/*.rst \
+    "${startdir}/.."/LICENSE \
+    ./
+  
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    .
+
+  make -j$(nproc)
+}
+ 
+package() {
+  (
+    cd "${startdir}/../build/pkgbuild-${pkgname}-${pkgver}"
+    make -j$(nproc) DESTDIR="$pkgdir" install
+  )
+
+  echo "rm ${startdir}/../pkgbuild-${pkgname}-${pkgver}"
+}
