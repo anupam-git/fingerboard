@@ -9,6 +9,7 @@ import Fingerboard 1.0
 
 ApplicationWindow {
     property bool showLogs: false
+    property bool noDevice: false
     property int selectedEnrollingFinger: -1
 
     id: appWindow
@@ -31,6 +32,10 @@ ApplicationWindow {
 
         // function onError(errorStatus, errorString)
         onError: {
+            if (errorStatus === AppState.ERROR_NO_DEVICE) {
+                noDevice = true;
+            }
+
             var component = Qt.createComponent("ErrorDialog.qml");
             component.createObject(appWindow, { errorString: errorString });
         }
@@ -102,7 +107,7 @@ ApplicationWindow {
             color: Material.color(Material.Grey, Material.Shade700)
         }
 
-        ToolTip.text: `<b>Device:</b> ${FingerboardCppInterface.deviceName}<br><b>Scan Type:</b> ${FingerboardCppInterface.scanType}<br><b>Enroll Stages:</b> ${FingerboardCppInterface.numEnrollStages}`
+        ToolTip.text: getDeviceInfoText()
 
         MouseArea {
             anchors.fill: parent
@@ -110,6 +115,16 @@ ApplicationWindow {
 
             onContainsMouseChanged: {
                 parent.ToolTip.visible = containsMouse;
+            }
+        }
+
+        function getDeviceInfoText() {
+            if (noDevice) {
+                return "No fingerprint reader detected"
+            } else {
+                return `<b>Device:</b> ${FingerboardCppInterface.deviceName}<br>`+
+                       `<b>Scan Type:</b> ${FingerboardCppInterface.scanType}<br>`+
+                       `<b>Enroll Stages:</b> ${FingerboardCppInterface.numEnrollStages}`
             }
         }
     }
