@@ -62,12 +62,5 @@ Dialog {
             font.pixelSize: 12
             leftPadding: 12
         }
-        Label {
-            text: "<b>Follow me on Twitter :</b> <a href='https://twitter.com/anupambasak27'>@anupambasak27</a>"
-            onLinkActivated: Qt.openUrlExternally(link)
-
-            font.pixelSize: 12
-            leftPadding: 12
-        }
     }
 }
