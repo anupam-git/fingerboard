@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls.Material 2.12
 
 Dialog {
     modal: true
@@ -59,13 +59,6 @@ Dialog {
             onLinkActivated: Qt.openUrlExternally(link)
 
             enabled: true
-            font.pixelSize: 12
-            leftPadding: 12
-        }
-        Label {
-            text: "<b>Follow me on Twitter :</b> <a href='https://twitter.com/anupambasak27'>@anupambasak27</a>"
-            onLinkActivated: Qt.openUrlExternally(link)
-
             font.pixelSize: 12
             leftPadding: 12
         }

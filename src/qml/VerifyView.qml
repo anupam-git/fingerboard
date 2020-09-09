@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls.Material 2.15
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
@@ -17,15 +17,18 @@ Rectangle {
     Connections {
         target: AppState
 
-        function onVerifyStarted() {
+        // function onVerifyStarted()
+        onVerifyStarted: {
             verifyStarted= true;
         }
 
-        function onVerifyCompleted() {
+        // function onVerifyCompleted()
+        onVerifyCompleted: {
             verifyCompleted = true;
         }
 
-        function onVerifyErrored() {
+        // function onVerifyErrored()
+        onVerifyErrored: {
             verifyErrored = true;
         }
     }

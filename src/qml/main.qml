@@ -1,14 +1,15 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import QtQuick.Controls 1.4 as Controls1
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
 
 ApplicationWindow {
     property bool showLogs: false
+    property bool noDevice: false
     property int selectedEnrollingFinger: -1
 
     id: appWindow
@@ -29,7 +30,12 @@ ApplicationWindow {
     Connections {
         target: AppState
 
-        function onError(errorStatus, errorString) {
+        // function onError(errorStatus, errorString)
+        onError: {
+            if (errorStatus === AppState.ERROR_NO_DEVICE) {
+                noDevice = true;
+            }
+
             var component = Qt.createComponent("ErrorDialog.qml");
             component.createObject(appWindow, { errorString: errorString });
         }
@@ -101,7 +107,7 @@ ApplicationWindow {
             color: Material.color(Material.Grey, Material.Shade700)
         }
 
-        ToolTip.text: `<b>Device:</b> ${FingerboardCppInterface.deviceName}<br><b>Scan Type:</b> ${FingerboardCppInterface.scanType}<br><b>Enroll Stages:</b> ${FingerboardCppInterface.numEnrollStages}`
+        ToolTip.text: getDeviceInfoText()
 
         MouseArea {
             anchors.fill: parent
@@ -109,6 +115,16 @@ ApplicationWindow {
 
             onContainsMouseChanged: {
                 parent.ToolTip.visible = containsMouse;
+            }
+        }
+
+        function getDeviceInfoText() {
+            if (noDevice) {
+                return "No fingerprint reader detected"
+            } else {
+                return `<b>Device:</b> ${FingerboardCppInterface.deviceName}<br>`+
+                       `<b>Scan Type:</b> ${FingerboardCppInterface.scanType}<br>`+
+                       `<b>Enroll Stages:</b> ${FingerboardCppInterface.numEnrollStages}`
             }
         }
     }
