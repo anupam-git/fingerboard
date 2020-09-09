@@ -4,6 +4,7 @@ set(
   FINGERBOARD_SRCS
 
   main.cpp
+  registertypes.cpp
 
   interfaces/fingerboard_cpp_interface.cpp
 

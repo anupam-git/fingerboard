@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Layouts 1.12
 
 import Fingerboard 1.0
 
@@ -9,7 +9,8 @@ Rectangle {
     Connections {
         target: FingerboardCppInterface
 
-        function onLog(logLevel, msg) {
+        // function onLog(logLevel, msg)
+        onLog: {
             logsModel.append({
                 logLevel: logLevel,
                 text: msg

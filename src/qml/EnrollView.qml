@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls.Material 2.15
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
@@ -18,11 +18,13 @@ Rectangle {
     Connections {
         target: AppState
 
-        function onEnrollStarted() {
+        // function onEnrollStarted()
+        onEnrollStarted: {
             enrollStarted = true;
         }
 
-        function onEnrollStatusChanged(status) {
+        // function onEnrollStatusChanged(status)
+        onEnrollStatusChanged: {
             switch (status) {
                 case AppState.ENROLL_STAGE_PASSED:
                     stageCounter++;
@@ -30,7 +32,8 @@ Rectangle {
             }
         }
 
-        function onEnrollCompleted() {
+        // function onEnrollCompleted()
+        onEnrollCompleted: {
             enrollCompleted = true;
             FingerboardCppInterface.listFp();
         }

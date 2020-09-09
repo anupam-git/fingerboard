@@ -44,7 +44,9 @@ void Logger::log(Logger::Level level, QString msg) {
 
   QString logMsg = format.arg(logLevel, 10).arg(timestamp, 22).arg(msg);
   QTextStream ts(file);
-  ts << logMsg << Qt::endl;
+
+  ts << logMsg << '\n';
+  ts.flush();
 
   emit writeLog(level, logMsg);
 }

@@ -1,8 +1,8 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import QtQuick.Controls 1.4 as Controls1
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Material 2.15
+import QtQuick.Controls 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 
 import Fingerboard 1.0
@@ -29,7 +29,8 @@ ApplicationWindow {
     Connections {
         target: AppState
 
-        function onError(errorStatus, errorString) {
+        // function onError(errorStatus, errorString)
+        onError: {
             var component = Qt.createComponent("ErrorDialog.qml");
             component.createObject(appWindow, { errorString: errorString });
         }
