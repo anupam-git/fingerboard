@@ -194,7 +194,7 @@ void FingerboardCppInterface::verifyFp(QString finger) {
       logger->log(Logger::VERBOSE, "Touch/Swipe to continue Verifying");
       appState->setVerifyStatus(AppState::VERIFY_START);
 
-      emit appState->veriyStarted();
+      emit appState->verifyStarted();
     }
   }
 }

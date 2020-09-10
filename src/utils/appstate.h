@@ -95,7 +95,7 @@ class AppState : public QObject {
   void enrollCompleted();
   void enrollErrored();
 
-  void veriyStarted();
+  void verifyStarted();
   void verifyStatusChanged(VerifyStatus status);
   void verifyCompleted();
   void verifyErrored();
