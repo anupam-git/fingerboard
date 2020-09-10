@@ -72,6 +72,8 @@ pkg/
 pkgbuild-fingerboard-*/
 fingerboard-*.pkg.tar.xz
 fingerboard-*.deb
+appimage-builder-cache/
+Fingerboard*.AppImage
 
 # OTHERS
 build/
