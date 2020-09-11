@@ -9,8 +9,44 @@ Fingerboard is a GUI interface to fprint, and uses the D-Bus interfaces to commu
 
 Building
 --------
-The project uses CMake to build the project. Follow the steps below to build and install this project.
+The project uses CMake build system. Follow the steps below to build, compile and install this project.
+
+Dependencies - Ubuntu
+^^^^^^^^^^^^^^^^^^^^^
    
+.. code-block:: bash
+
+  apt install \
+    cmake \
+    extra-cmake-modules \
+    qtbase5-dev \
+    qtdeclarative5-dev \
+    qtquickcontrols2-5-dev \
+    libqt5svg5-dev \
+    qml-module-qtquick-controls \
+    qml-module-qtquick-controls2 \
+    qml-module-qtgraphicaleffects \
+    qml-module-qtquick-layouts
+
+Dependencies - Arch
+^^^^^^^^^^^^^^^^^^^
+   
+.. code-block:: bash
+
+  pacman -S \
+    cmake \
+    extra-cmake-modules \
+    gcc \
+    make \
+    qt5-base \
+    qt5-graphicaleffects \
+    qt5-svg \
+    qt5-quickcontrols \
+    qt5-quickcontrols2
+
+Build and compile
+^^^^^^^^^^^^^^^^^
+    
 .. code-block:: bash
 
   # Make a build directory and cd into it
