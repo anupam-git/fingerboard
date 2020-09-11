@@ -4,11 +4,11 @@ AppState::AppState(QObject *parent) : QObject(parent) {}
 
 AppState::ErrorStatus AppState::errorStatusFromRawString(
     QString rawErrorString) {
-  return rawErrorMap[rawErrorString];
+  return rawErrorMap.value(rawErrorString);
 }
 
 void AppState::raiseError(QString rawError) {
-  raiseError(rawErrorMap[rawError]);
+  raiseError(rawErrorMap.value(rawError));
 }
 
 void AppState::raiseError(AppState::ErrorStatus errorStatus) {
@@ -18,7 +18,7 @@ void AppState::raiseError(AppState::ErrorStatus errorStatus) {
 AppState::EnrollStatus AppState::getEnrollStatus() { return _enrollStatus; }
 
 AppState::EnrollStatus AppState::enrollStatusFromRawString(QString rawStatus) {
-  return rawEnrollStatusMap[rawStatus];
+  return rawEnrollStatusMap.value(rawStatus);
 }
 
 void AppState::setEnrollStatus(AppState::EnrollStatus status) {
@@ -29,7 +29,7 @@ void AppState::setEnrollStatus(AppState::EnrollStatus status) {
 AppState::VerifyStatus AppState::getVerifyStatus() { return _verifyStatus; }
 
 AppState::VerifyStatus AppState::verifyStatusFromRawString(QString rawStatus) {
-  return rawVerifyStatusMap[rawStatus];
+  return rawVerifyStatusMap.value(rawStatus);
 }
 
 void AppState::setVerifyStatus(AppState::VerifyStatus status) {

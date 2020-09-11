@@ -35,6 +35,14 @@ static QObject *fingerboardCppInterfaceSingletonProvider(QQmlEngine *e,
     logger = new Logger(e);
   }
 
+  if (fingerObj == nullptr) {
+    fingerObj = new Finger(e);
+  }
+
+  if (appState == nullptr) {
+    appState = new AppState(e);
+  }
+
   if (fingerboardCppInterface == nullptr) {
     fingerboardCppInterface =
         new FingerboardCppInterface(fingerObj, logger, appState, e);

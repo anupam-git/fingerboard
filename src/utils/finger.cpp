@@ -30,7 +30,7 @@ QString Finger::name(Finger::Fingerprint finger) {
 }
 
 Finger::Fingerprint Finger::fromName(QString rawFingerName) {
-  return rawFingersMap[rawFingerName];
+  return rawFingersMap.value(rawFingerName);
 }
 
 QString Finger::rawFingerName(int fingerprint) {
