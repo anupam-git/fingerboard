@@ -5,7 +5,7 @@ AppDir:
 
   app_info:
     id: fingerboard
-    name: Fingerboard
+    name: fingerboard
     icon: fingerboard
     version: !ENV ${APP_VERSION}
     exec: usr/bin/fingerboard
