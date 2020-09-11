@@ -13,10 +13,14 @@ The project uses CMake build system. Follow the steps below to build, compile an
 
 Dependencies - Ubuntu
 ^^^^^^^^^^^^^^^^^^^^^
-   
+Note: Requires ``universe`` repository to be enabled for qt dependencies.
+
 .. code-block:: bash
 
   apt install \
+    gcc \
+    g++ \
+    make \
     cmake \
     extra-cmake-modules \
     qtbase5-dev \
@@ -34,10 +38,10 @@ Dependencies - Arch
 .. code-block:: bash
 
   pacman -S \
-    cmake \
-    extra-cmake-modules \
     gcc \
     make \
+    cmake \
+    extra-cmake-modules \
     qt5-base \
     qt5-graphicaleffects \
     qt5-svg \
