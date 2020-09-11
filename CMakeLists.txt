@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(FINGERBOARD_VERSION 0.2.1)
+set(FINGERBOARD_VERSION 0.2.2)
 
 project(fingerboard VERSION ${FINGERBOARD_VERSION})
 
